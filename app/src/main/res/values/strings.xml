@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">MemoryQuiz</string>
     <string name="action_settings">Settings</string>
+    <string name="memory_quiz">Memory Quiz</string>
+    <string name="add">ADD</string>
+    <string name="edit">EDIT</string>
+    <string name="play">PLAY</string>
 </resources>

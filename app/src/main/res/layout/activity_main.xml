@@ -18,7 +18,7 @@
             android:layout_height="94dp"
             android:ems="10"
             android:fontFamily="sans-serif"
-            android:text="Memory Quiz"
+            android:text="@string/memory_quiz"
             android:textAlignment="center"
             android:textSize="50sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -50,21 +50,21 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="@android:color/holo_blue_dark"
-                android:text="ADD" />
+                android:text="@string/add" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="@android:color/holo_green_dark"
-                android:text="EDIT" />
+                android:text="@string/edit" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="@android:color/holo_red_dark"
-                android:text="PLAY" />
+                android:text="@string/play" />
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 </android.support.design.widget.CoordinatorLayout>
