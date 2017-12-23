@@ -5,4 +5,5 @@
     <string name="add">ADD</string>
     <string name="edit">EDIT</string>
     <string name="play">PLAY</string>
+    <string name="info">Info</string>
 </resources>
