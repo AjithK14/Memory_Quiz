@@ -14,20 +14,24 @@
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="94dp"
+            android:layout_width="315dp"
+            android:layout_height="81dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:ems="10"
             android:fontFamily="sans-serif"
-            android:gravity="center_vertical|center"
+            android:gravity="center_vertical"
+            android:padding="5dp"
             android:text="@string/memory_quiz"
             android:textAlignment="center"
             android:textSize="50sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.355"
+            app:layout_constraintVertical_bias="1.0"
             tools:layout_conversion_absoluteHeight="160dp"
             tools:layout_conversion_absoluteWidth="768dp" />
 
@@ -46,7 +50,7 @@
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.728">
+            app:layout_constraintVertical_bias="0.586">
 
             <Button
                 android:id="@+id/button"
