@@ -3,20 +3,16 @@ package com.example.ajithk14.memoryquiz;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.Shader;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.media.FaceDetector;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import static java.lang.Math.min;
 
@@ -27,15 +23,95 @@ public class DrawImageView extends View {
     private RectF dimens;
     private int touchX=600, touchY=600;
     private int radius;
+    private LinkedList<FaceRectangle> rects;
+    private Bitmap resizeIcon, moveIcon, deleteIcon;
+
+    private FaceRectangle selected = null;
+    private boolean moving = false; //true = moving rectangle, false = resizing rectangle
 
     public DrawImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         image = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.stock_image);
+        resizeIcon = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.resize);
+        moveIcon = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.move);
+        deleteIcon = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.delete);
+
 
         paint = new Paint();
 
         dimens = new RectF();
+
+        rects = new LinkedList<FaceRectangle>();
+
+
+
+        setOnClickListener(new OnClickListener() { //just to make onTouch work properly, not being used
+            @Override
+            public void onClick(View v) {}
+        });
+
+        setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                touchX = (int) event.getX();
+                touchY = (int) event.getY();
+
+
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+
+                        boolean makeNewRect = true;
+                        Iterator<FaceRectangle> i = rects.iterator();
+                        while (i.hasNext()) {
+                            FaceRectangle f = i.next();
+                            if(f.getMoveRect().contains(touchX,touchY)) {
+                                selected = f;
+                                moving = true;
+                                makeNewRect = false;
+                            } else if(f.getResizeRect().contains(touchX,touchY)) {
+                                selected = f;
+                                moving = false;
+                                makeNewRect = false;
+                            } else if(f.getDeleteRect().contains(touchX,touchY)) {
+                                i.remove();
+                                makeNewRect = false;
+                            }
+                        }
+                        if(makeNewRect) {
+                            rects.addFirst(new FaceRectangle(touchX,touchY));
+                            selected = rects.getFirst();
+                            moving=false;
+                        }
+
+                        break;
+
+                    case MotionEvent.ACTION_MOVE:
+
+                        if(selected!=null) {
+                            if(moving) {
+                                selected.setCoordinatesFromCenter(touchX, touchY);
+                            } else {
+                                selected.setDimensFromBottomRightCorner(touchX,touchY);
+                            }
+                        }
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+
+                        selected=null;
+                        break;
+
+                }
+
+
+
+                invalidate((int)dimens.left,(int)dimens.top,(int)dimens.right,(int)dimens.bottom);
+                return false;
+            }
+        });
+
     }
 
     @Override
@@ -61,14 +137,11 @@ public class DrawImageView extends View {
         dimens.set((getWidth() - finalWidth) / 2, (getHeight() - finalHeight) / 2, finalWidth + (getWidth() - finalWidth) / 2, finalHeight + (getHeight() - finalHeight) / 2);
         canvas.drawBitmap(image, null, dimens, paint);
 
-        paint.setColor((Color.RED));
-        canvas.drawCircle(touchX, touchY, radius / 5, paint);
-    }
+        for(FaceRectangle e : rects) {
+            e.draw(canvas, moveIcon, resizeIcon, deleteIcon);
+        }
 
-    public void setTouch(int x, int y) {
-        touchX=x;
-        touchY=y;
-        invalidate(touchX- radius / 5,touchY- radius / 5,touchX+ radius / 5,touchY+ radius / 5);
+
     }
 
 }
