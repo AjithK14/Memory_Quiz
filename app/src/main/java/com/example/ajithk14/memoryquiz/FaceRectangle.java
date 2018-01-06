@@ -18,13 +18,13 @@ class FaceRectangle {
     private RectF dimens, resize, move, delete;
 
     FaceRectangle(int x, int y) {
-        dimens = new RectF(x-10,y-10,x+10,y+10);
+        dimens = new RectF(x-70,y-70,x+70,y+70);
         resize = new RectF();
         move = new RectF();
         delete = new RectF();
 
-        resize.set(dimens.right-25-10,dimens.bottom-25-10,dimens.right+25-10,dimens.bottom+25-10);
-        delete.set(dimens.left-25,dimens.top-25,dimens.left+25,dimens.top+25);
+        resize.set(dimens.right-35-10,dimens.bottom-35-10,dimens.right+35-10,dimens.bottom+35-10);
+        delete.set(dimens.left-35,dimens.top-35,dimens.left+35,dimens.top+35);
         move.set(dimens.centerX()-40,dimens.centerY()-40,dimens.centerX()+40,dimens.centerY()+40);
     }
 
@@ -50,10 +50,10 @@ class FaceRectangle {
         if(y<dimens.centerY())
             y=(int)(2*dimens.centerY()-y);
 
-        if(x-dimens.centerX()<50)
-            x=(int)dimens.centerX()+50;
-        if(y-dimens.centerY()<50)
-            y=(int)dimens.centerY()+50;
+        if(x-dimens.centerX()<70)
+            x=(int)dimens.centerX()+70;
+        if(y-dimens.centerY()<70)
+            y=(int)dimens.centerY()+70;
 
         dimens.set(2*dimens.centerX()-x,2*dimens.centerY()-y, x, y);
     }
@@ -72,8 +72,8 @@ class FaceRectangle {
         p.setColor(Color.BLACK);
         canvas.drawRoundRect(dimens,25,25,p);
 
-        resize.set(dimens.right-25-10,dimens.bottom-25-10,dimens.right+25-10,dimens.bottom+25-10);
-        delete.set(dimens.left-25,dimens.top-25,dimens.left+25,dimens.top+25);
+        resize.set(dimens.right-35-10,dimens.bottom-35-10,dimens.right+35-10,dimens.bottom+35-10);
+        delete.set(dimens.left-35,dimens.top-35,dimens.left+35,dimens.top+35);
         move.set(dimens.centerX()-40,dimens.centerY()-40,dimens.centerX()+40,dimens.centerY()+40);
 
         canvas.drawBitmap(moveIcon,null, move,p);
