@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:backgroundTint="@android:color/darker_gray"
-    tools:context="com.example.ajithk14.memoryquiz.MainActivity">
+    tools:context="com.example.ajithk14.memoryquiz.Main2Activity">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
