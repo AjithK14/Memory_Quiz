@@ -7,8 +7,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import com.example.ajithk14.memoryquiz.R;
 
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -53,6 +53,11 @@ public class Main3Activity extends AppCompatActivity {
         sqlitehelper.queryData("CREATE TABLE IF NOT EXISTS FACE (Id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, image BLOG)");
 
     }
+    public void onClickTakeImage(View view)
+    {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent,0);
+    }
     public void onClick(View view)
     {
         ActivityCompat.requestPermissions(Main3Activity.this,
@@ -92,6 +97,11 @@ public class Main3Activity extends AppCompatActivity {
             {
                 e.printStackTrace();
             }
+        }
+        else if (requestCode==0)
+        {
+            Bitmap takenImage = (Bitmap)data.getExtras().get("data");
+            imageView.setImageBitmap(takenImage);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
