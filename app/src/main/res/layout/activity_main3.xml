@@ -26,8 +26,8 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
-        android:layout_width="92dp"
-        android:layout_height="96dp"
+        android:layout_width="65dp"
+        android:layout_height="74dp"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:visibility="visible"
@@ -37,7 +37,7 @@
         app:layout_anchorGravity="right|bottom"
         app:rippleColor="@android:color/holo_blue_light"
         app:srcCompat="@android:drawable/ic_input_add"
-        tools:layout_editor_absoluteX="212dp"
-        tools:layout_editor_absoluteY="396dp" />
+        tools:layout_editor_absoluteX="239dp"
+        tools:layout_editor_absoluteY="418dp" />
 
 </android.support.design.widget.CoordinatorLayout>
