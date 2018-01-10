@@ -1,6 +1,7 @@
 package com.example.ajithk14.memoryquiz;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -13,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -28,6 +30,7 @@ import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 
 public class Main3Activity extends AppCompatActivity {
     final int REQUEST_CODE_GALLERY=999;
+    static final int REQUEST_IMAGE_CAPTURE=1;
     ImageView imageView;
     public static SQLiteHelper sqlitehelper;
     @Override
@@ -43,7 +46,6 @@ public class Main3Activity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -56,7 +58,8 @@ public class Main3Activity extends AppCompatActivity {
     public void onClickTakeImage(View view)
     {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent,0);
+        if (intent.resolveActivity(getPackageManager()) != null){
+        startActivityForResult(intent,REQUEST_IMAGE_CAPTURE);}
     }
     public void onClick(View view)
     {
@@ -98,10 +101,44 @@ public class Main3Activity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        else if (requestCode==0)
+        else if (requestCode==REQUEST_IMAGE_CAPTURE)
         {
+            if (resultCode== RESULT_CANCELED)
+            {
+
+                startActivity(new Intent(getApplicationContext(),Main3Activity.class));
+                finish();
+            }
+            else{
             Bitmap takenImage = (Bitmap)data.getExtras().get("data");
             imageView.setImageBitmap(takenImage);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            builder.setTitle("Storage");
+            builder.setMessage("Do you want this picture to be written to your device's storage? (" +
+                    "this message can be turned off in settings)");
+
+            builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int which) {
+                    // Do nothing but close the dialog
+
+                    dialog.dismiss();
+                }
+            });
+
+            builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    // Do nothing
+                    dialog.dismiss();
+                }
+            });
+
+            AlertDialog alert = builder.create();
+            alert.show();}
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
