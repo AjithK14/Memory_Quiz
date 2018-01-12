@@ -14,7 +14,7 @@ tools:context="com.example.ajithk14.memoryquiz.Main2Activity">
     android:backgroundTint="@android:color/darker_gray">
 
     <com.example.ajithk14.memoryquiz.DrawImageView
-        android:id="@+id/image"
+        android:id="@+id/myImageDraw"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_alignParentEnd="true"

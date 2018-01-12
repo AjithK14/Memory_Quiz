@@ -7,6 +7,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.media.FaceDetector;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,7 +18,7 @@ import java.util.LinkedList;
 
 import static java.lang.Math.min;
 
-public class DrawImageView extends View {
+public class DrawImageView extends View{
 
     private Paint paint;
     private Bitmap image;
@@ -30,9 +32,9 @@ public class DrawImageView extends View {
     private boolean moving = false; //true = moving rectangle, false = resizing rectangle
 
     public DrawImageView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-
-        image = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.stock_image);
+        super(context, attrs);}
+    public void startStuff(byte[] bit){
+        image = BitmapFactory.decodeByteArray(bit,0,bit.length);
         resizeIcon = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.resize);
         moveIcon = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.move);
         deleteIcon = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.delete);
@@ -143,6 +145,7 @@ public class DrawImageView extends View {
 
 
     }
+
 
 }
 
