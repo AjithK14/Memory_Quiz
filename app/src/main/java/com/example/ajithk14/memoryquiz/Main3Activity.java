@@ -29,6 +29,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -43,6 +44,7 @@ import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 public class Main3Activity extends AppCompatActivity {
     final int REQUEST_CODE_GALLERY=999;
     private Context TheThis;
+    byte[] byteArray;
     public Uri imageUri;
     private Bitmap takenImage;
     static final int REQUEST_IMAGE_CAPTURE=1;
@@ -63,8 +65,8 @@ public class Main3Activity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -114,6 +116,9 @@ public class Main3Activity extends AppCompatActivity {
                 InputStream inputStream = getContentResolver().openInputStream(uri);
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                 imageView.setImageBitmap(bitmap);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byteArray = stream.toByteArray();
 
             }
             catch(FileNotFoundException e)
@@ -134,7 +139,10 @@ public class Main3Activity extends AppCompatActivity {
                 takenImage = MediaStore.Images.Media.getBitmap(
                         getContentResolver(), imageUri);
                 String imageurl = getRealPathFromURI(imageUri);
-                imageView.setImageBitmap(takenImage);}
+                imageView.setImageBitmap(takenImage);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                takenImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byteArray = stream.toByteArray();}
                 catch(Exception e)
                 {
                     e.printStackTrace();

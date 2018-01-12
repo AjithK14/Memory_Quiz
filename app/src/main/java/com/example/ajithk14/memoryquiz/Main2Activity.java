@@ -10,10 +10,14 @@ package com.example.ajithk14.memoryquiz;
 
 public class Main2Activity extends AppCompatActivity {
 
+    DrawImageView imgView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        imgView= (DrawImageView) findViewById(R.id.myImageDraw);
+        //imgView.startStuff();
+
     }
 
     @Override
