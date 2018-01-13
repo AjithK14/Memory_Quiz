@@ -9,43 +9,33 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 
 public class Main3Activity extends AppCompatActivity {
     final int REQUEST_CODE_GALLERY=999;
     private Context TheThis;
     byte[] byteArray;
     public Uri imageUri;
+    Bitmap bitmap;
     private Bitmap takenImage;
     static final int REQUEST_IMAGE_CAPTURE=1;
     static final int REQUEST_TAKE_PHOTO = 1;
@@ -65,7 +55,7 @@ public class Main3Activity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                changeActivites();
+                changeActivities();
                 /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
             }
@@ -75,13 +65,25 @@ public class Main3Activity extends AppCompatActivity {
         sqlitehelper.queryData("CREATE TABLE IF NOT EXISTS FACE (Id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, image BLOG)");
 
     }
-    public void changeActivites()
+    public void changeActivities()
     {
-        imageCarrier img = new imageCarrier(byteArray);
+
+        FileOutputStream out = null;
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String NameOfFile = "JPEG_" + timeStamp + "_";
+        try {
+            out = openFileOutput(NameOfFile,Context.MODE_PRIVATE);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out); // bmp is your Bitmap instance
+            out.close();
+            // PNG is a lossless format, the compression factor (100) is ignored
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Intent i = new Intent(this, Main2Activity.class);
-        i.putExtra("smooth", img);
+        i.putExtra("smooth", NameOfFile);
         startActivity(i);
         finish();
+
     }
     public void onClickTakeImage(View view)
     {
@@ -123,7 +125,7 @@ public class Main3Activity extends AppCompatActivity {
             Uri uri = data.getData();
             try{
                 InputStream inputStream = getContentResolver().openInputStream(uri);
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                bitmap = BitmapFactory.decodeStream(inputStream);
                 imageView.setImageBitmap(bitmap);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
