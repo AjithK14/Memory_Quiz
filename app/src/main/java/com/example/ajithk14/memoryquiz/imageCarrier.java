@@ -18,6 +18,10 @@ public class imageCarrier implements Parcelable {
     protected imageCarrier(Parcel in) {
         myImg = in.createByteArray();
     }
+    public byte[] getArray()
+    {
+        return myImg;
+    }
 
     public static final Creator<imageCarrier> CREATOR = new Creator<imageCarrier>() {
         @Override

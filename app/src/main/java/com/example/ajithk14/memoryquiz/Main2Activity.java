@@ -15,7 +15,12 @@ public class Main2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        imageCarrier rock = (imageCarrier)getIntent().getParcelableExtra("smooth");
         imgView= (DrawImageView) findViewById(R.id.myImageDraw);
+        if (rock != null)
+        {
+            imgView.startStuff(rock.getArray());
+        }
         //imgView.startStuff();
 
     }

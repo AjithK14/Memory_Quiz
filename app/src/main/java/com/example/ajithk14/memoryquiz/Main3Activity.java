@@ -65,6 +65,7 @@ public class Main3Activity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                changeActivites();
                 /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
             }
@@ -73,6 +74,14 @@ public class Main3Activity extends AppCompatActivity {
         sqlitehelper = new SQLiteHelper(this, "FacesDB.sqlite",null,1);
         sqlitehelper.queryData("CREATE TABLE IF NOT EXISTS FACE (Id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, image BLOG)");
 
+    }
+    public void changeActivites()
+    {
+        imageCarrier img = new imageCarrier(byteArray);
+        Intent i = new Intent(this, Main2Activity.class);
+        i.putExtra("smooth", img);
+        startActivity(i);
+        finish();
     }
     public void onClickTakeImage(View view)
     {
