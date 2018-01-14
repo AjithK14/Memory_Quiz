@@ -1,11 +1,21 @@
 
 package com.example.ajithk14.memoryquiz;
 
+        import android.content.Context;
+        import android.content.ContextWrapper;
+        import android.content.Intent;
+        import android.graphics.Bitmap;
+        import android.graphics.BitmapFactory;
         import android.os.Bundle;
         import android.support.v7.app.AppCompatActivity;
         import android.view.Menu;
         import android.view.MenuItem;
         import android.view.MotionEvent;
+        import android.widget.ImageView;
+
+        import java.io.File;
+        import java.io.FileInputStream;
+        import java.io.FileNotFoundException;
 
 
 public class Main2Activity extends AppCompatActivity {
@@ -15,16 +25,28 @@ public class Main2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-        imageCarrier rock = (imageCarrier)getIntent().getParcelableExtra("smooth");
-        imgView= (DrawImageView) findViewById(R.id.myImageDraw);
-        if (rock != null)
-        {
-            imgView.startStuff(rock.getArray());
-        }
-        //imgView.startStuff();
+        Intent recievedIntent = getIntent();
+        String select = recievedIntent.getStringExtra("smooth");
+        String name = recievedIntent.getStringExtra("filename");
+        loadImageFromStorage(select,name);
+
 
     }
 
+    private void loadImageFromStorage(String path,String name) {
+
+        try {
+            ContextWrapper cw = new ContextWrapper(getApplicationContext());
+            File path1 = cw.getDir("imageDir", Context.MODE_PRIVATE);
+            File f = new File(path1, name);
+            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+            imgView= (DrawImageView) findViewById(R.id.myImageDraw);
+            imgView.startStuff(b);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
