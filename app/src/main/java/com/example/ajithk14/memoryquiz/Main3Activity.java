@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.provider.MediaStore;
@@ -35,14 +36,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Main3Activity extends AppCompatActivity {
-    final int REQUEST_CODE_GALLERY=999;
+    final int REQUEST_CODE_GALLERY = 999;
     private Context TheThis;
     byte[] byteArray;
     ByteArrayOutputStream stream;
     public Uri imageUri;
     Bitmap bitmap;
     private Bitmap takenImage;
-    static final int REQUEST_IMAGE_CAPTURE=1;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
     ImageView imageView;
     public static SQLiteHelper sqlitehelper;
@@ -54,25 +55,44 @@ public class Main3Activity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         imageView = (ImageView) findViewById(R.id.imageView);
+        findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
 
-                changeActivities();
+                        changeActivities();
+                    }
+                });
                 /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        sqlitehelper = new SQLiteHelper(this, "FacesDB.sqlite",null,1);
+        sqlitehelper = new SQLiteHelper(this, "FacesDB.sqlite", null, 1);
         sqlitehelper.queryData("CREATE TABLE IF NOT EXISTS FACE (Id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, image BLOG)");
 
     }
-    public void changeActivities()
-    {
+
+    @Override
+    protected void onRestart() {
+        findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+        super.onRestart();
+    }
+
+    @Override
+    protected void onResume() {
+        findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+        super.onResume();
+    }
+
+    public void changeActivities() {
         /*
         FileOutputStream out = null;
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -94,6 +114,7 @@ public class Main3Activity extends AppCompatActivity {
 
 
     }
+
     private String[] saveToInternalStorage(Bitmap bitmapImage) {
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
@@ -116,26 +137,27 @@ public class Main3Activity extends AppCompatActivity {
             e.printStackTrace();
         }
         String[] arr = new String[2];
-        arr[0]= directory.getAbsolutePath();arr[1]=NameOfFile;
+        arr[0] = directory.getAbsolutePath();
+        arr[1] = NameOfFile;
         return arr;
     }
 
-    public void onClickTakeImage(View view)
-    {
+    public void onClickTakeImage(View view) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (intent.resolveActivity(getPackageManager()) != null){
+        if (intent.resolveActivity(getPackageManager()) != null) {
             ContentValues values = new ContentValues();
             values.put(MediaStore.Images.Media.TITLE, "New Picture");
             values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
             imageUri = getContentResolver().insert(
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        startActivityForResult(intent,REQUEST_IMAGE_CAPTURE);}
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+        }
     }
-    public void onClick(View view)
-    {
+
+    public void onClick(View view) {
         ActivityCompat.requestPermissions(Main3Activity.this,
-                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},REQUEST_CODE_GALLERY);
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_GALLERY);
     }
 
     @Override
@@ -155,10 +177,9 @@ public class Main3Activity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==REQUEST_CODE_GALLERY && resultCode==RESULT_OK && data != null)
-        {
+        if (requestCode == REQUEST_CODE_GALLERY && resultCode == RESULT_OK && data != null) {
             Uri uri = data.getData();
-            try{
+            try {
                 InputStream inputStream = getContentResolver().openInputStream(uri);
                 takenImage = BitmapFactory.decodeStream(inputStream);
                 imageView.setImageBitmap(takenImage);
@@ -166,72 +187,66 @@ public class Main3Activity extends AppCompatActivity {
                 takenImage.compress(Bitmap.CompressFormat.PNG, 50, stream);
                 byteArray = stream.toByteArray();
 
-            }
-            catch(FileNotFoundException e)
-            {
+            } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-        }
-        else if (requestCode==REQUEST_IMAGE_CAPTURE)
-        {
-            if (resultCode== RESULT_CANCELED)
-            {
+        } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
+            if (resultCode == RESULT_CANCELED) {
 
-                startActivity(new Intent(getApplicationContext(),Main3Activity.class));
+                startActivity(new Intent(getApplicationContext(), Main3Activity.class));
                 finish();
-            }
-            else{
-                try{
-                takenImage = MediaStore.Images.Media.getBitmap(
-                        getContentResolver(), imageUri);
-                String imageurl = getRealPathFromURI(imageUri);
-                imageView.setImageBitmap(takenImage);
-                stream = new ByteArrayOutputStream();
-                takenImage.compress(Bitmap.CompressFormat.PNG, 50, stream);
-                byteArray = stream.toByteArray();}
-                catch(Exception e)
-                {
+            } else {
+                try {
+                    takenImage = MediaStore.Images.Media.getBitmap(
+                            getContentResolver(), imageUri);
+                    String imageurl = getRealPathFromURI(imageUri);
+                    imageView.setImageBitmap(takenImage);
+                    stream = new ByteArrayOutputStream();
+                    takenImage.compress(Bitmap.CompressFormat.PNG, 50, stream);
+                    byteArray = stream.toByteArray();
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-            builder.setTitle("Storage");
-            builder.setMessage("Do you want this picture to be written to your device's storage? (" +
-                    "this message can be turned off in settings)");
+                builder.setTitle("Storage");
+                builder.setMessage("Do you want this picture to be written to your device's storage? (" +
+                        "this message can be turned off in settings)");
 
-            builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
-                public void onClick(DialogInterface dialog, int which) {
-                    MediaStore.Images.Media.insertImage(getContentResolver(), takenImage, "Img1" , "Taken");
+                    public void onClick(DialogInterface dialog, int which) {
+                        MediaStore.Images.Media.insertImage(getContentResolver(), takenImage, "Img1", "Taken");
 
-                }
-            });
+                    }
+                });
 
-            builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
 
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-                    // Do nothing
-                    dialog.dismiss();
-                }
-            });
+                        // Do nothing
+                        dialog.dismiss();
+                    }
+                });
 
-            AlertDialog alert = builder.create();
-            alert.show();}
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
     public String getRealPathFromURI(Uri contentUri) {
         String res = null;
-        String[] proj = { MediaStore.Images.Media.DATA };
+        String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
-        if(cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             res = cursor.getString(column_index);
         }
         cursor.close();
         return res;
     }
-
 }
