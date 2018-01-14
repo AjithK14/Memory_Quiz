@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/darker_gray"
+    android:backgroundTint="@android:color/darker_gray"
     tools:context="com.example.ajithk14.memoryquiz.Main3Activity">
 
     <android.support.design.widget.AppBarLayout
@@ -36,7 +38,7 @@
         app:layout_anchor="@+id/include"
         app:layout_anchorGravity="right|bottom"
         app:rippleColor="@android:color/holo_blue_light"
-        app:srcCompat="@android:drawable/ic_input_add"
+        app:srcCompat="@android:drawable/checkbox_on_background"
         tools:layout_editor_absoluteX="239dp"
         tools:layout_editor_absoluteY="418dp" />
 
