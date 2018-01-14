@@ -18,4 +18,8 @@ public class MainActivity extends AppCompatActivity{
         startActivity(new Intent(getApplicationContext(),Main3Activity.class));
 
     }
+    public void onClickEdit(View v)
+    {
+        startActivity(new Intent(getApplicationContext(),EditActivity.class));
+    }
 }

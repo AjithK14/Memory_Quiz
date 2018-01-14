@@ -193,32 +193,7 @@ public class Main3Activity extends AppCompatActivity {
                 {
                     e.printStackTrace();
                 }
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-            builder.setTitle("Storage");
-            builder.setMessage("Do you want this picture to be written to your device's storage? (" +
-                    "this message can be turned off in settings)");
-
-            builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-
-                public void onClick(DialogInterface dialog, int which) {
-                    MediaStore.Images.Media.insertImage(getContentResolver(), takenImage, "Img1" , "Taken");
-
-                }
-            });
-
-            builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-
-                    // Do nothing
-                    dialog.dismiss();
-                }
-            });
-
-            AlertDialog alert = builder.create();
-            alert.show();}
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

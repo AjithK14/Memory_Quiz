@@ -67,6 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="@android:color/holo_green_dark"
+                android:onClick="onClickEdit"
                 android:text="@string/edit"
                 android:textSize="20sp" />
 
