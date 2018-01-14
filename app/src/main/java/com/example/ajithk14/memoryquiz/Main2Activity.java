@@ -25,9 +25,9 @@ public class Main2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-        Intent recievedIntent = getIntent();
-        String select = recievedIntent.getStringExtra("smooth");
-        String name = recievedIntent.getStringExtra("filename");
+        Intent receivedIntent = getIntent();
+        String select = receivedIntent.getStringExtra("smooth");
+        String name = receivedIntent.getStringExtra("filename");
         loadImageFromStorage(select,name);
 
 

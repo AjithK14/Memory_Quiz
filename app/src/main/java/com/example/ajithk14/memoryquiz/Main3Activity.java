@@ -86,7 +86,7 @@ public class Main3Activity extends AppCompatActivity {
             e.printStackTrace();
         }
         */
-        String[] x = saveToInternalSorage(takenImage);
+        String[] x = saveToInternalStorage(takenImage);
         Intent i = new Intent(this, Main2Activity.class);
         i.putExtra("smooth", x[0]);
         i.putExtra("filename", x[1]);
@@ -94,7 +94,7 @@ public class Main3Activity extends AppCompatActivity {
 
 
     }
-    private String[] saveToInternalSorage(Bitmap bitmapImage) {
+    private String[] saveToInternalStorage(Bitmap bitmapImage) {
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         // Create imageDir
