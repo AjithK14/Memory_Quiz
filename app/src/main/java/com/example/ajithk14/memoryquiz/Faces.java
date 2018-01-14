@@ -1,24 +1,39 @@
 package com.example.ajithk14.memoryquiz;
 
+import android.graphics.Bitmap;
+
+import java.text.DateFormat;
+import java.util.Date;
+
 /**
  * Created by Ajithk14 on 1/6/2018.
  */
 
 public class Faces {
-    private int id;
+    private int _id;
     private int score;
+    private String currDt;
     private String name;
-    int[] coors;
+    Bitmap coors;
 
-    public Faces(int[] coors,int id)
+    public Faces(Bitmap coors, String name)
     {
         this.coors=coors;
         this.score=0;
-        this.id = id;
+        this.name=name;
+        this.currDt = DateFormat.getDateTimeInstance().format(new Date());
     }
-    public void callFace(int id) //for when a user calls this
+    public String getCurrDt()
     {
-        this.id = id;
+        return currDt;
+    }
+    public void set_id(int x)
+    {
+        _id = x;
+    }
+    public int getid()
+    {
+        return _id;
     }
     public void increment()
     {
@@ -28,4 +43,5 @@ public class Faces {
     {
         return score;
     }
+    public String getName(){return name;}
 }

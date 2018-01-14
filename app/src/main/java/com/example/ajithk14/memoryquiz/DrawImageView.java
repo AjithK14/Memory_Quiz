@@ -34,7 +34,7 @@ public class DrawImageView extends View{
     public DrawImageView(Context context, AttributeSet attrs) {
         super(context, attrs);}
     public void startStuff(Bitmap p){
-        image = p;
+        image = Bitmap.createBitmap(p);
         resizeIcon = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.resize);
         moveIcon = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.move);
         deleteIcon = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.delete);

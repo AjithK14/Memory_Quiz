@@ -7,21 +7,28 @@ import android.database.sqlite.SQLiteDatabase;
  * Created by Ajithk14 on 1/6/2018.
  */
 
+/*
+ROWS: 1 ENTRY
+COLUMNS (IN ORDER): COLID, SCORE, FACENAME, ACTUAL FACE(BYTEARR)
+ */
+
 public class MyDBHandler extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME= "FacesStorage.db";
     public static final String TABLE_PRODUCTS="Faces";
-    public static final String COLUMN_ID="score";
-    public static final String COLUMN_PRODUCTNAME="faceName";
+    //storing tables in a database; we will have one table called Faces
+    public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_DATETIME="date";
 
     public MyDBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+        super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String query = "CREATE_TABLE" + TABLE_PRODUCTS + "(" + COLUMN_ID + "PRIMARY IMAGE"
-                + COLUMN_PRODUCTNAME + "TEXT" + ");";
+        String query = "CREATE TABLE " + TABLE_PRODUCTS + "(" +
+                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT "
+                + COLUMN_DATETIME + " TEXT " + ");";
         db.execSQL(query);
     }
 
@@ -34,16 +41,17 @@ public class MyDBHandler extends SQLiteOpenHelper {
     //add row
     public void addFace(Faces face)
     {
+
         ContentValues values = new ContentValues();
-        values.put(COLUMN_PRODUCTNAME,face.getScore());
+        values.put(COLUMN_DATETIME,face.getCurrDt());
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_PRODUCTS,null,values);
         db.close();
     }
     //delete from database
-    public void delFace(String face)
+    public void delFace(Faces face)
     {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_PRODUCTS + " WHERE " + COLUMN_PRODUCTNAME + "=\"" + face + "\";");
+        db.execSQL("DELETE FROM " + TABLE_PRODUCTS + " WHERE " + COLUMN_DATETIME + "=\"" + face.getCurrDt() + "\";");
     }
 }

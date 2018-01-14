@@ -3,8 +3,10 @@ package com.example.ajithk14.memoryquiz;
 import android.Manifest;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -24,6 +26,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -34,6 +38,7 @@ public class Main3Activity extends AppCompatActivity {
     final int REQUEST_CODE_GALLERY=999;
     private Context TheThis;
     byte[] byteArray;
+    ByteArrayOutputStream stream;
     public Uri imageUri;
     Bitmap bitmap;
     private Bitmap takenImage;
@@ -55,6 +60,7 @@ public class Main3Activity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 changeActivities();
                 /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
@@ -67,7 +73,7 @@ public class Main3Activity extends AppCompatActivity {
     }
     public void changeActivities()
     {
-
+        /*
         FileOutputStream out = null;
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String NameOfFile = "JPEG_" + timeStamp + "_";
@@ -79,12 +85,41 @@ public class Main3Activity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        */
+        String[] x = saveToInternalSorage(takenImage);
         Intent i = new Intent(this, Main2Activity.class);
-        i.putExtra("smooth", NameOfFile);
+        i.putExtra("smooth", x[0]);
+        i.putExtra("filename", x[1]);
         startActivity(i);
-        finish();
+
 
     }
+    private String[] saveToInternalSorage(Bitmap bitmapImage) {
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String NameOfFile = "JPEG_" + timeStamp + ".jpg";
+        File mypath = new File(directory, NameOfFile);
+
+        FileOutputStream fos = null;
+        try {
+
+            fos = new FileOutputStream(mypath);
+
+            // Use the compress method on the BitMap object to write image to
+            // the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String[] arr = new String[2];
+        arr[0]= directory.getAbsolutePath();arr[1]=NameOfFile;
+        return arr;
+    }
+
     public void onClickTakeImage(View view)
     {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -125,10 +160,10 @@ public class Main3Activity extends AppCompatActivity {
             Uri uri = data.getData();
             try{
                 InputStream inputStream = getContentResolver().openInputStream(uri);
-                bitmap = BitmapFactory.decodeStream(inputStream);
-                imageView.setImageBitmap(bitmap);
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                takenImage = BitmapFactory.decodeStream(inputStream);
+                imageView.setImageBitmap(takenImage);
+                stream = new ByteArrayOutputStream();
+                takenImage.compress(Bitmap.CompressFormat.PNG, 50, stream);
                 byteArray = stream.toByteArray();
 
             }
@@ -151,8 +186,8 @@ public class Main3Activity extends AppCompatActivity {
                         getContentResolver(), imageUri);
                 String imageurl = getRealPathFromURI(imageUri);
                 imageView.setImageBitmap(takenImage);
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                takenImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                stream = new ByteArrayOutputStream();
+                takenImage.compress(Bitmap.CompressFormat.PNG, 50, stream);
                 byteArray = stream.toByteArray();}
                 catch(Exception e)
                 {
@@ -188,12 +223,15 @@ public class Main3Activity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
     public String getRealPathFromURI(Uri contentUri) {
+        String res = null;
         String[] proj = { MediaStore.Images.Media.DATA };
-        Cursor cursor = managedQuery(contentUri, proj, null, null, null);
-        int column_index = cursor
-                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
+        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+        if(cursor.moveToFirst()){
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res = cursor.getString(column_index);
+        }
+        cursor.close();
+        return res;
     }
 
 }
