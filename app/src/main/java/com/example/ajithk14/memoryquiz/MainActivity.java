@@ -1,17 +1,29 @@
 package com.example.ajithk14.memoryquiz;
 
+import android.graphics.drawable.AnimationDrawable;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import android.content.*;
-public class MainActivity extends AppCompatActivity{
 
+import java.util.Arrays;
+
+public class MainActivity extends AppCompatActivity{
+    ConstraintLayout myLayout;
+    AnimationDrawable myDraw;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        myLayout = (ConstraintLayout)findViewById(R.id.myLayout);
+        myDraw=(AnimationDrawable)myLayout.getBackground();
+        myDraw.setEnterFadeDuration(4500);
+        myDraw.setExitFadeDuration(4500);
+        myDraw.start();
     }
     @Override
     protected void onDestroy() {
@@ -31,6 +43,31 @@ public class MainActivity extends AppCompatActivity{
     }
     public void onClickPlay(View v)
     {
-        startActivity(new Intent(getApplicationContext(),GameActivity.class));
+        DATABASEFINAL.readFromFile(getApplicationContext());
+        if (DATABASEFINAL.answers.size()==0) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                    MainActivity.this);
+
+            // set title
+            alertDialogBuilder.setTitle("SORRY!");
+
+            // set dialog message
+            alertDialogBuilder
+                    .setMessage("You need to enter some names first!")
+                    .setCancelable(false)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+        }
+        else{
+        startActivity(new Intent(getApplicationContext(),GameActivity.class));}
     }
 }

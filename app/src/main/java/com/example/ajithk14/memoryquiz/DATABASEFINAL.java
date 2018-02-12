@@ -1,7 +1,10 @@
 package com.example.ajithk14.memoryquiz;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.os.Environment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -16,6 +19,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Ajithk14 on 2/11/2018.
@@ -29,10 +33,20 @@ public class DATABASEFINAL {
     final StringBuffer storedString = new StringBuffer();
     public static void done(Context context)
     {
+
         try {
-            FileOutputStream output = new FileOutputStream("facesNames.txt", false);
+            File direct = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
+            if (!direct.exists())
+            {
+                direct.mkdirs();
+            }
+            File file = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo","facesNames.txt");
+
+            FileOutputStream output = new FileOutputStream(file, false);
+
             //OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("facesNames.txt", Context.MODE_PRIVATE));
             for (String x: faces) {
+                Log.d("face",x);
                 output.write((x + '\n').getBytes());
             }
             //outputStreamWriter.close();
@@ -41,9 +55,18 @@ public class DATABASEFINAL {
             Log.e("Exception", "File write failed: " + e.toString());
         }
         try {
-            FileOutputStream output2 = new FileOutputStream("actualNames.txt", false);
+            File direct = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
+            if (!direct.exists())
+            {
+                direct.mkdirs();
+            }
+            File file = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo","actualNames.txt");
+
+
+            FileOutputStream output2 = new FileOutputStream(file, false);
             //OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("actualNames.txt", Context.MODE_PRIVATE));
             for (String x: answers) {
+                Log.d("name",x);
                 output2.write((x + '\n').getBytes());
             }
             output2.close();
@@ -55,9 +78,17 @@ public class DATABASEFINAL {
     public static void readFromFile(Context context) {
 
         //String ret = "";
-
+        faces = new ArrayList<>();
+        answers = new ArrayList<>();
         try {
-            FileInputStream inputStream = new FileInputStream("facesNames.txt");
+            File direct = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
+            if (!direct.exists())
+            {
+                direct.mkdirs();
+            }
+            File file = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo","facesNames.txt");
+
+            FileInputStream inputStream = new FileInputStream(file);
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -71,49 +102,37 @@ public class DATABASEFINAL {
             }
             reader.close();
             inputStream.close();
-        }
-        catch (FileNotFoundException e) {
-            Log.e("login activity", "File not found: " + e.toString());
-        } catch (IOException e) {
-            Log.e("login activity", "Can not read file: " + e.toString());
-        }
-        try {
-            /*
-            InputStream inputStream = context.openFileInput("actualNames.txt");
 
-            if ( inputStream != null ) {
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String receiveString = "";
-                StringBuilder stringBuilder = new StringBuilder();
+            File direct2 = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
+            if (!direct2.exists())
+            {
+                direct2.mkdirs();
+            }
+            File file2 = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo","actualNames.txt");
 
-                while ( (receiveString = bufferedReader.readLine()) != null ) {
-                    answers.add(receiveString);
-                }
+            FileInputStream inputStream2 = new FileInputStream(file2);
 
-                inputStream.close();
-                //ret = stringBuilder.toString();
-            }*/
-            FileInputStream inputStream = new FileInputStream("actualNames.txt");
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            BufferedReader reader2 = new BufferedReader(new InputStreamReader(inputStream2));
 
             //System.out.println("Reading File line by line using BufferedReader");
 
-            String line = reader.readLine();
-            while(line != null){
-                answers.add(line);
-                Log.d("reading..", line);
-                line = reader.readLine();
+            String line2 = reader2.readLine();
+            while(line2 != null){
+                answers.add(line2);
+                Log.d("reading..", line2);
+                line2 = reader2.readLine();
             }
-            reader.close();
-            inputStream.close();
+            reader2.close();
+            inputStream2.close();
         }
         catch (FileNotFoundException e) {
             Log.e("login activity", "File not found: " + e.toString());
         } catch (IOException e) {
             Log.e("login activity", "Can not read file: " + e.toString());
         }
+
+        Log.d("stuff", Arrays.toString(DATABASEFINAL.faces.toArray()));
+        Log.d("stuff", Arrays.toString(DATABASEFINAL.answers.toArray()));
 
         //return ret;
     }

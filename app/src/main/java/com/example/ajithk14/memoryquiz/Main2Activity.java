@@ -1,18 +1,23 @@
 
 package com.example.ajithk14.memoryquiz;
 
+        import android.Manifest;
         import android.content.Context;
         import android.content.ContextWrapper;
+        import android.content.DialogInterface;
         import android.content.Intent;
         import android.graphics.Bitmap;
         import android.graphics.BitmapFactory;
         import android.graphics.Rect;
+        import android.graphics.drawable.AnimationDrawable;
         import android.media.FaceDetector;
         import com.soundcloud.android.crop.Crop;
         import android.media.Image;
         import android.net.Uri;
         import android.os.Bundle;
+        import android.support.constraint.ConstraintLayout;
         import android.support.v4.content.ContextCompat;
+        import android.support.v7.app.AlertDialog;
         import android.support.v7.app.AppCompatActivity;
         import android.util.Log;
         import android.view.Menu;
@@ -22,6 +27,7 @@ package com.example.ajithk14.memoryquiz;
         import android.widget.Button;
         import android.widget.EditText;
         import android.widget.ImageView;
+        import android.widget.TextView;
         import android.widget.Toast;
 
         import java.io.File;
@@ -43,7 +49,8 @@ public class Main2Activity extends AppCompatActivity {
     public boolean complete;
     Button rectsCreated;
     public EditText et;
-
+    ConstraintLayout myLayout;
+    AnimationDrawable myDraw;
     public ImageView faceTemp;
     public String name;
 
@@ -52,12 +59,17 @@ public class Main2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         Intent receivedIntent = getIntent();
+        myLayout = (ConstraintLayout)findViewById(R.id.myLayout);
+        myDraw=(AnimationDrawable)myLayout.getBackground();
+        myDraw.setEnterFadeDuration(4500);
+        myDraw.setExitFadeDuration(4500);
+        myDraw.start();
+
 
         String select = receivedIntent.getStringExtra("smooth");
         name = receivedIntent.getStringExtra("filename");
-        rectsCreated = (Button)findViewById(R.id.doneButton);
+        //rectsCreated = (Button)findViewById(R.id.button7);
         complete=false;
-
         faceTemp = (ImageView) findViewById(R.id.imageView3);
         formDone = (Button)findViewById(R.id.button7);
         et = (EditText)findViewById(R.id.editText2);
@@ -82,34 +94,49 @@ public class Main2Activity extends AppCompatActivity {
             et.setError("please enter name");//it gives user to info message //use any one //
             Toast.makeText(Main2Activity.this,"Name required!", Toast.LENGTH_SHORT).show();
         }
-        else
-        {
+        else {
             complete = true;
-            if (DATABASEFINAL.answers.size() == 0)
-            {
-                Log.d("debug","reading...");
+            if (DATABASEFINAL.answers.size() == 0) {
+                Log.d("debug", "reading...");
                 DATABASEFINAL.readFromFile(getApplicationContext());
             }
             DATABASEFINAL.faces.add(name);
-            DATABASEFINAL.answers.add(et.getText().toString());
-            Log.d("stuff", Arrays.toString(DATABASEFINAL.answers.toArray()));
-            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                    Main2Activity.this);
+
+            // set title
+            alertDialogBuilder.setTitle("DONE");
+
+            // set dialog message
+            alertDialogBuilder
+                    .setMessage("Success!")
+                    .setCancelable(false)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // if this button is clicked, close
+                            // current activity
+                            DATABASEFINAL.answers.add(et.getText().toString());
+                            DATABASEFINAL.done(getApplicationContext());
+                            Log.d("stuff", Arrays.toString(DATABASEFINAL.answers.toArray()));
+                            Log.d("stuff", Arrays.toString(DATABASEFINAL.faces.toArray()));
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            dialog.dismiss();
+                        }
+                    });
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+
+
+
 
             //Intent in=new Intent(getApplicationContext(),second.class);
             //startActivity(in);
+
         }
-
-    }
-    protected void onDestroy() {
-        super.onDestroy();
-        DATABASEFINAL.done(getApplicationContext());
-        Log.d("out", "WE OUT");
-    }
-    @Override
-    protected void onPause() {
-        DATABASEFINAL.done(getApplicationContext());
-
-        super.onPause();
     }
     public void deleteFace(View v)
     {
@@ -117,6 +144,7 @@ public class Main2Activity extends AppCompatActivity {
         {
             startActivity(new Intent(getApplicationContext(),MainActivity.class));
             complete = true;
+            Log.d("stuff", Arrays.toString(DATABASEFINAL.answers.toArray()));
             //Intent in=new Intent(getApplicationContext(),second.class);
             //startActivity(in);
         }

@@ -39,19 +39,21 @@
         <Button
             android:id="@+id/button2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_margin="8dp"
             android:layout_weight="1"
+            android:backgroundTint="@color/colorPrimaryDark"
             android:onClick="onClick"
             android:text="Choose Image"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="20sp"
             app:layout_constraintTop_toBottomOf="@+id/imageView"
             tools:layout_editor_absoluteX="322dp" />
 
         <Button
             android:id="@+id/button4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
@@ -60,6 +62,7 @@
             android:onClick="onClickTakeImage"
             android:text="Take Image"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.713"
@@ -97,6 +100,7 @@
             android:text="Enter an image to be entered as part of the quiz. When you are done hit the button at the bottom right!"
             android:textAlignment="textStart"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

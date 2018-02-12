@@ -2,6 +2,7 @@ package com.example.ajithk14.memoryquiz;
 
 import android.Manifest;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -9,14 +10,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
 import android.os.Environment;
+import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -29,6 +34,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.soundcloud.android.crop.Crop;
+import com.soundcloud.android.crop.CropImageView;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,7 +44,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Main3Activity extends AppCompatActivity {
     final int REQUEST_CODE_GALLERY=999;
@@ -46,15 +56,20 @@ public class Main3Activity extends AppCompatActivity {
     Intent CamIntent,GalIntent,CropIntent;
     public Uri imageUri;
     File file;
+    final int CAMERA_CAPTURE = 1;
     Uri uri;
     Bitmap bitmap;
     public Uri picUri;
     private Bitmap takenImage;
+    public String cameraFileName;
     public Bitmap THEbitmap;
     final int RequestPermissionCode=1;
     static final int REQUEST_IMAGE_CAPTURE=1;
     static final int REQUEST_TAKE_PHOTO = 1;
+    final int REQUEST_EXTERNAL_STORAGE=4;
     ImageView imageView;
+    final int CROP_PIC=2;
+    CropImageView mCropImageView;
     public static SQLiteHelper sqlitehelper;
 
     @Override
@@ -63,8 +78,28 @@ public class Main3Activity extends AppCompatActivity {
         setContentView(R.layout.activity_main3);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mCropImageView = new CropImageView(getApplicationContext());
+
         imageView = (ImageView) findViewById(R.id.imageView);
         THEbitmap=null;
+        //int permis = ContextCompat.checkSelfPermission(Main3Activity.this,
+          //      Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(Main3Activity.this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(Main3Activity.this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        REQUEST_EXTERNAL_STORAGE);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+
+        }
         int permissionCheck = ContextCompat.checkSelfPermission(Main3Activity.this,Manifest.permission.CAMERA);
         if (permissionCheck == PackageManager.PERMISSION_DENIED)
         {
@@ -87,11 +122,6 @@ public class Main3Activity extends AppCompatActivity {
         //sqlitehelper.queryData("CREATE TABLE IF NOT EXISTS FACE (Id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, image BLOG)");
 
     }
-    @Override
-    protected void onPause() {
-        DATABASEFINAL.done(getApplicationContext());
-        super.onPause();
-    }
     private void GalleryOpen() {
         GalIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(Intent.createChooser(GalIntent,"Select Image from Gallery"),2);
@@ -99,12 +129,12 @@ public class Main3Activity extends AppCompatActivity {
 
     private void CameraOpen() {
         CamIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        file = new File(Environment.getExternalStorageDirectory(),
+        /*file = new File(Environment.getExternalStorageDirectory(),
                 "file"+String.valueOf(System.currentTimeMillis())+".jpg");
         uri = Uri.fromFile(file);
         CamIntent.putExtra(MediaStore.EXTRA_OUTPUT,uri);
-        CamIntent.putExtra("return-data",true);
-        startActivityForResult(CamIntent,0);
+        CamIntent.putExtra("return-data",true);*/
+        startActivityForResult(CamIntent,CAMERA_CAPTURE);
     }
 
 
@@ -122,7 +152,7 @@ public class Main3Activity extends AppCompatActivity {
             CropIntent.putExtra("scaleUpIfNeeded",true);
             CropIntent.putExtra("return-data",true);
 
-            startActivityForResult(CropIntent,1);
+            startActivityForResult(CropIntent,CROP_PIC);
         }
         catch (ActivityNotFoundException ex)
         {
@@ -172,7 +202,7 @@ public class Main3Activity extends AppCompatActivity {
             e.printStackTrace();
         }
         */
-        String[] x = saveToInternalStorage(THEbitmap);
+        String[] x = saveToInternalStorage(((BitmapDrawable)imageView.getDrawable()).getBitmap());
         Intent i = new Intent(this, Main2Activity.class);
         i.putExtra("smooth", x[0]);
         i.putExtra("filename", x[1]);
@@ -208,16 +238,112 @@ public class Main3Activity extends AppCompatActivity {
 
     public void onClickTakeImage(View view)
     {
-        CameraOpen();
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraFileName = Environment.getExternalStorageDirectory() +""+ System.currentTimeMillis();
+        File file = new File(""+Environment.getExternalStorageDirectory());
+        if(!file.exists()){
+            file.mkdirs();
+        }
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(cameraFileName)));
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent, CAMERA_CAPTURE);
+
     }
     public void onClick(View view)
     {
-        GalleryOpen();
+        Crop.pickImage(this);
+        //GalleryOpen();
     }
 
-
+    private Intent getCropIntent(Intent intent) {
+        intent.putExtra("crop", "true");
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        intent.putExtra("outputX", 320);
+        intent.putExtra("outputY", 320);
+        intent.putExtra("return-data", true);
+        return intent;
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==RESULT_OK)
+        {
+            if (requestCode==Crop.REQUEST_PICK)
+            {
+                Uri src_uri = data.getData();
+                Uri dest = Uri.fromFile(new File(getCacheDir(),"cropped"));
+                Crop.of(src_uri,dest).asSquare().start(this);
+                imageView.setImageURI(Crop.getOutput(data));
+            }
+            else if (requestCode==82)
+            {
+                THEbitmap = getBitmapFromData(data);
+                imageView.setImageBitmap(THEbitmap);
+
+            }
+            else if (requestCode == CAMERA_CAPTURE) {
+                Intent intent = new Intent("com.android.camera.action.CROP");
+                Uri uri = Uri.fromFile(new File(cameraFileName));
+                intent.setDataAndType(uri, "image/*");
+                startActivityForResult(getCropIntent(intent), 82);
+                // get the Uri for the captured image
+                //picUri = data.getData();
+                //Log.d("gg","WE ARE USING THE CAMERA WOOT WOOT");
+                /*
+
+                //mCropImageView.setImageURI
+                mCropImageView.setImageURI(getPickImageResultUri(data));
+                Bitmap cropped =  mCropImageView.getCroppedImage(500, 500);
+                if (cropped != null)
+                    imageView.setImageBitmap(cropped);*/
+                //performCrop();
+            }
+            else if (requestCode==Crop.REQUEST_CROP)
+            {
+                handle_crop(resultCode,data);
+            }
+            else if (data != null && (requestCode == CROP_PIC || requestCode==79)) {
+                // get the returned data
+                Bundle extras = data.getExtras();
+                // get the cropped bitmap
+
+                THEbitmap = extras.getParcelable("data");
+                imageView.setImageBitmap(THEbitmap);
+            }
+        }
+    }
+    public static Bitmap getBitmapFromData(Intent data) {
+        Bitmap photo = null;
+        Uri photoUri = data.getData();
+        if (photoUri != null) {
+            photo = BitmapFactory.decodeFile(photoUri.getPath());
+        }
+        if (photo == null) {
+            Bundle extra = data.getExtras();
+            if (extra != null) {
+                photo = (Bitmap) extra.get("data");
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                photo.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            }
+        }
+
+        return photo;
+    }
+    public void handle_crop(int code, Intent result)
+    {
+        if (code==RESULT_OK)
+        {
+            imageView.setImageURI(Crop.getOutput(result));
+            THEbitmap=((BitmapDrawable)imageView.getDrawable()).getBitmap();
+        }
+        else if (code==Crop.RESULT_ERROR)
+        {
+
+        }
+    }
+
+        /*
         if(requestCode == 0 && resultCode == RESULT_OK)
             CropImage();
         else if(requestCode == 2)
@@ -239,6 +365,7 @@ public class Main3Activity extends AppCompatActivity {
             }
         }
     }
+    */
     /*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -310,7 +437,7 @@ public class Main3Activity extends AppCompatActivity {
         cursor.close();
         return res;
     }
-    private int performCrop() {
+    private void performCrop() {
         // take care of exceptions
         try {
             // call the standard crop action intent (the user device may not
@@ -329,21 +456,83 @@ public class Main3Activity extends AppCompatActivity {
             // retrieve data on return
             cropIntent.putExtra("return-data", true);
             // start the activity - we handle returning in onActivityResult
-            return 1;
+            startActivityForResult(cropIntent,79);
         }
         // respond to users whose devices do not support the crop action
         catch (ActivityNotFoundException anfe) {
             Toast toast = Toast
                     .makeText(this, "This device doesn't support the crop action!", Toast.LENGTH_SHORT);
             toast.show();
-            return 0;
+            //return 0;
         }
 
     }
-    protected void onDestroy() {
-        super.onDestroy();
-        DATABASEFINAL.done(getApplicationContext());
-        Log.d("out", "WE OUT");
+    public Intent getPickImageChooserIntent() {
+
+        // Determine Uri of camera image to save.
+        Uri outputFileUri = getCaptureImageOutputUri();
+
+        List<Intent> allIntents = new ArrayList<>();
+        PackageManager packageManager = getPackageManager();
+
+        // collect all camera intents
+        Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
+        for (ResolveInfo res : listCam) {
+            Intent intent = new Intent(captureIntent);
+            intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+            intent.setPackage(res.activityInfo.packageName);
+            if (outputFileUri != null) {
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+            }
+            allIntents.add(intent);
+        }
+
+        // collect all gallery intents
+        Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        galleryIntent.setType("image/*");
+        List<ResolveInfo> listGallery = packageManager.queryIntentActivities(galleryIntent, 0);
+        for (ResolveInfo res : listGallery) {
+            Intent intent = new Intent(galleryIntent);
+            intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+            intent.setPackage(res.activityInfo.packageName);
+            allIntents.add(intent);
+        }
+
+        // the main intent is the last in the list (fucking android) so pickup the useless one
+        Intent mainIntent = allIntents.get(allIntents.size() - 1);
+        for (Intent intent : allIntents) {
+            if (intent.getComponent().getClassName().equals("com.android.documentsui.DocumentsActivity")) {
+                mainIntent = intent;
+                break;
+            }
+        }
+        allIntents.remove(mainIntent);
+
+        // Create a chooser from the main intent
+        Intent chooserIntent = Intent.createChooser(mainIntent, "Select source");
+
+        // Add all other intents
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, allIntents.toArray(new Parcelable[allIntents.size()]));
+
+        return chooserIntent;
     }
+    private Uri getCaptureImageOutputUri() {
+        Uri outputFileUri = null;
+        File getImage = getExternalCacheDir();
+        if (getImage != null) {
+            outputFileUri = Uri.fromFile(new File(getImage.getPath(), "pickImageResult.jpeg"));
+        }
+        return outputFileUri;
+    }
+    public Uri getPickImageResultUri(Intent  data) {
+        boolean isCamera = true;
+        if (data != null && data.getData() != null) {
+            String action = data.getAction();
+            isCamera = action != null  && action.equals(MediaStore.ACTION_IMAGE_CAPTURE);
+        }
+        return isCamera ?  getCaptureImageOutputUri() : data.getData();
+    }
+
 
 }

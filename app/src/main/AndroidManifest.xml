@@ -59,6 +59,8 @@
         <activity android:name=".KeepOrDisc" />
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity android:name=".GameActivity"></activity>
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/> <!-- optional (needed if default theme has no action bar) -->
     </application>
 
 </manifest>
