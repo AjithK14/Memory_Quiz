@@ -4,7 +4,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
+import android.view.View;
 
 /**
  * Created by ravidudhagra on 12/26/17.
@@ -15,7 +17,7 @@ import android.graphics.RectF;
 
 class FaceRectangle {
 
-    private RectF dimens, resize, move, delete;
+    public RectF dimens, resize, move, delete;
 
     FaceRectangle(int x, int y) {
         dimens = new RectF(x-70,y-70,x+70,y+70);
@@ -27,7 +29,20 @@ class FaceRectangle {
         delete.set(dimens.left-35,dimens.top-35,dimens.left+35,dimens.top+35);
         move.set(dimens.centerX()-40,dimens.centerY()-40,dimens.centerX()+40,dimens.centerY()+40);
     }
+    public Rect locateView(View view) {
+        Rect loc = new Rect();
+        int[] location = new int[2];
+        if (view == null) {
+            return loc;
+        }
+        view.getLocationOnScreen(location);
 
+        loc.left = location[0];
+        loc.top = location[1];
+        loc.right = loc.left + view.getWidth();
+        loc.bottom = loc.top + view.getHeight();
+        return loc;
+    }
     RectF getRect() {
         return dimens;
     }
@@ -79,6 +94,7 @@ class FaceRectangle {
         canvas.drawBitmap(moveIcon,null, move,p);
         canvas.drawBitmap(resizeIcon,null,resize,p);
         canvas.drawBitmap(deleteIcon,null,delete,p);
+
 
     }
 }

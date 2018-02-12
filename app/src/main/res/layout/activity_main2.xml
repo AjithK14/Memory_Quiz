@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
@@ -19,6 +20,7 @@ tools:context="com.example.ajithk14.memoryquiz.Main2Activity">
         android:layout_height="0dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp" />
@@ -39,7 +41,8 @@ tools:context="com.example.ajithk14.memoryquiz.Main2Activity">
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/two_circle"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display3" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/textView"
@@ -47,8 +50,84 @@ tools:context="com.example.ajithk14.memoryquiz.Main2Activity">
             android:layout_height="wrap_content"
             android:paddingLeft="5dp"
             android:text="@string/draw_rectangles_around_faces"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/doneButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/holo_green_dark"
+            android:onClick="weOut"
+            android:text="DONE"
+            android:visibility="invisible" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="265dp"
+        android:layout_height="329dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.086"
+        app:srcCompat="@mipmap/ic_launcher" />
+
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:onClick="formComplete"
+        android:text="DONE"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.76" />
+
+    <Button
+        android:id="@+id/button8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:onClick="deleteFace"
+        android:text="DISCARD"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.879" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/myImageDraw"
+        app:layout_constraintVertical_bias="0.617" />
 
 </android.support.constraint.ConstraintLayout>
 </android.support.design.widget.CoordinatorLayout>

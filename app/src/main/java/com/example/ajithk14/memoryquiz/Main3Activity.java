@@ -1,6 +1,7 @@
 package com.example.ajithk14.memoryquiz;
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -14,13 +15,16 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -39,9 +43,15 @@ public class Main3Activity extends AppCompatActivity {
     private Context TheThis;
     byte[] byteArray;
     ByteArrayOutputStream stream;
+    Intent CamIntent,GalIntent,CropIntent;
     public Uri imageUri;
+    File file;
+    Uri uri;
     Bitmap bitmap;
+    public Uri picUri;
     private Bitmap takenImage;
+    public Bitmap THEbitmap;
+    final int RequestPermissionCode=1;
     static final int REQUEST_IMAGE_CAPTURE=1;
     static final int REQUEST_TAKE_PHOTO = 1;
     ImageView imageView;
@@ -54,6 +64,12 @@ public class Main3Activity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         imageView = (ImageView) findViewById(R.id.imageView);
+        THEbitmap=null;
+        int permissionCheck = ContextCompat.checkSelfPermission(Main3Activity.this,Manifest.permission.CAMERA);
+        if (permissionCheck == PackageManager.PERMISSION_DENIED)
+        {
+            RequestRuntimePermission();
+        }
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -67,9 +83,79 @@ public class Main3Activity extends AppCompatActivity {
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        sqlitehelper = new SQLiteHelper(this, "FacesDB.sqlite",null,1);
-        sqlitehelper.queryData("CREATE TABLE IF NOT EXISTS FACE (Id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, image BLOG)");
+        //sqlitehelper = new SQLiteHelper(this, "FacesDB.sqlite",null,1);
+        //sqlitehelper.queryData("CREATE TABLE IF NOT EXISTS FACE (Id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, image BLOG)");
 
+    }
+    @Override
+    protected void onPause() {
+        DATABASEFINAL.done(getApplicationContext());
+        super.onPause();
+    }
+    private void GalleryOpen() {
+        GalIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(Intent.createChooser(GalIntent,"Select Image from Gallery"),2);
+    }
+
+    private void CameraOpen() {
+        CamIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        file = new File(Environment.getExternalStorageDirectory(),
+                "file"+String.valueOf(System.currentTimeMillis())+".jpg");
+        uri = Uri.fromFile(file);
+        CamIntent.putExtra(MediaStore.EXTRA_OUTPUT,uri);
+        CamIntent.putExtra("return-data",true);
+        startActivityForResult(CamIntent,0);
+    }
+
+
+    private void CropImage() {
+
+        try{
+            CropIntent = new Intent("com.android.camera.action.CROP");
+            CropIntent.setDataAndType(uri,"image/*");
+
+            CropIntent.putExtra("crop","true");
+            CropIntent.putExtra("outputX",180);
+            CropIntent.putExtra("outputY",180);
+            CropIntent.putExtra("aspectX",3);
+            CropIntent.putExtra("aspectY",4);
+            CropIntent.putExtra("scaleUpIfNeeded",true);
+            CropIntent.putExtra("return-data",true);
+
+            startActivityForResult(CropIntent,1);
+        }
+        catch (ActivityNotFoundException ex)
+        {
+
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode)
+        {
+            case RequestPermissionCode:
+            {
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    Toast.makeText(this,"Permission Granted",Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(this,"Permission Canceled",Toast.LENGTH_SHORT).show();
+            }
+            break;
+        }
+    }
+    private void RequestRuntimePermission()
+    {
+        if(ActivityCompat.shouldShowRequestPermissionRationale(Main3Activity.this,Manifest.permission.CAMERA))
+        {
+            Toast.makeText(this,"suhhh",Toast.LENGTH_SHORT).show();
+
+        }
+        else
+        {
+            ActivityCompat.requestPermissions(Main3Activity.this,new String[]{Manifest.permission.CAMERA},REQUEST_IMAGE_CAPTURE);
+        }
     }
     public void changeActivities()
     {
@@ -86,7 +172,7 @@ public class Main3Activity extends AppCompatActivity {
             e.printStackTrace();
         }
         */
-        String[] x = saveToInternalStorage(takenImage);
+        String[] x = saveToInternalStorage(THEbitmap);
         Intent i = new Intent(this, Main2Activity.class);
         i.putExtra("smooth", x[0]);
         i.putExtra("filename", x[1]);
@@ -122,54 +208,57 @@ public class Main3Activity extends AppCompatActivity {
 
     public void onClickTakeImage(View view)
     {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (intent.resolveActivity(getPackageManager()) != null){
-            ContentValues values = new ContentValues();
-            values.put(MediaStore.Images.Media.TITLE, "New Picture");
-            values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
-            imageUri = getContentResolver().insert(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        startActivityForResult(intent,REQUEST_IMAGE_CAPTURE);}
+        CameraOpen();
     }
     public void onClick(View view)
     {
-        ActivityCompat.requestPermissions(Main3Activity.this,
-                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},REQUEST_CODE_GALLERY);
+        GalleryOpen();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_CODE_GALLERY) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, REQUEST_CODE_GALLERY);
-            } else {
-                Toast.makeText(getApplicationContext(), "No permission to access folder", Toast.LENGTH_SHORT).show();
-            }
-            return;
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==REQUEST_CODE_GALLERY && resultCode==RESULT_OK && data != null)
+        if(requestCode == 0 && resultCode == RESULT_OK)
+            CropImage();
+        else if(requestCode == 2)
         {
-            Uri uri = data.getData();
-            try{
+            if(data != null)
+            {
+                uri = data.getData();
+                CropImage();
+            }
+        }
+        else if (requestCode == 1)
+        {
+            if(data != null)
+            {
+                Bundle bundle = data.getExtras();
+                THEbitmap = bundle.getParcelable("data");
+                imageView.setImageBitmap(THEbitmap);
+                //String[] THEarr = saveToInternalStorage(THEbitmap);
+            }
+        }
+    }
+    /*
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==2 && resultCode==RESULT_OK && data != null)
+        {
+            //Uri uri = data.getData();
+            if (true){
+                Bundle extras = data.getExtras();
+                takenImage = extras.getParcelable("data");
+                imageView.setImageBitmap(takenImage);
+                /*
                 InputStream inputStream = getContentResolver().openInputStream(uri);
                 takenImage = BitmapFactory.decodeStream(inputStream);
                 imageView.setImageBitmap(takenImage);
                 stream = new ByteArrayOutputStream();
                 takenImage.compress(Bitmap.CompressFormat.PNG, 50, stream);
                 byteArray = stream.toByteArray();
-
-            }
-            catch(FileNotFoundException e)
-            {
-                e.printStackTrace();
+                */
+    /*
             }
         }
         else if (requestCode==REQUEST_IMAGE_CAPTURE)
@@ -182,21 +271,34 @@ public class Main3Activity extends AppCompatActivity {
             }
             else{
                 try{
+                    /*
                 takenImage = MediaStore.Images.Media.getBitmap(
                         getContentResolver(), imageUri);
                 String imageurl = getRealPathFromURI(imageUri);
                 imageView.setImageBitmap(takenImage);
                 stream = new ByteArrayOutputStream();
                 takenImage.compress(Bitmap.CompressFormat.PNG, 50, stream);
-                byteArray = stream.toByteArray();}
+                byteArray = stream.toByteArray();*/
+    /*
+                    picUri = data.getData();
+                    int done = performCrop();
+                    if (done == 1)
+                    {
+                        Bundle extras = data.getExtras();
+                        // get the cropped bitmap
+                        takenImage = extras.getParcelable("data");
+                        imageView.setImageBitmap(takenImage);
+                    }
+                }
+
                 catch(Exception e)
                 {
                     e.printStackTrace();
                 }
             }
         }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
+
+    }*/
     public String getRealPathFromURI(Uri contentUri) {
         String res = null;
         String[] proj = { MediaStore.Images.Media.DATA };
@@ -207,6 +309,41 @@ public class Main3Activity extends AppCompatActivity {
         }
         cursor.close();
         return res;
+    }
+    private int performCrop() {
+        // take care of exceptions
+        try {
+            // call the standard crop action intent (the user device may not
+            // support it)
+            Intent cropIntent = new Intent("com.android.camera.action.CROP");
+            // indicate image type and Uri
+            cropIntent.setDataAndType(picUri, "image/*");
+            // set crop properties
+            cropIntent.putExtra("crop", "true");
+            // indicate aspect of desired crop
+            cropIntent.putExtra("aspectX", 2);
+            cropIntent.putExtra("aspectY", 1);
+            // indicate output X and Y
+            cropIntent.putExtra("outputX", 256);
+            cropIntent.putExtra("outputY", 256);
+            // retrieve data on return
+            cropIntent.putExtra("return-data", true);
+            // start the activity - we handle returning in onActivityResult
+            return 1;
+        }
+        // respond to users whose devices do not support the crop action
+        catch (ActivityNotFoundException anfe) {
+            Toast toast = Toast
+                    .makeText(this, "This device doesn't support the crop action!", Toast.LENGTH_SHORT);
+            toast.show();
+            return 0;
+        }
+
+    }
+    protected void onDestroy() {
+        super.onDestroy();
+        DATABASEFINAL.done(getApplicationContext());
+        Log.d("out", "WE OUT");
     }
 
 }

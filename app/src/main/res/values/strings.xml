@@ -10,4 +10,6 @@
     <string name="draw_rectangles_around_faces">Draw Rectangles around Faces</string>
     <string name="two_circle">②</string>
     <string name="title_activity_main3">Main3Activity</string>
+    <string name="title_activity_main4">Main4Activity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>

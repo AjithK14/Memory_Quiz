@@ -33,6 +33,10 @@ public class DrawImageView extends View{
 
     public DrawImageView(Context context, AttributeSet attrs) {
         super(context, attrs);}
+    public LinkedList<FaceRectangle> done()
+    {
+        return rects;
+    }
     public void startStuff(Bitmap p){
         image = Bitmap.createBitmap(p);
         resizeIcon = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.resize);
