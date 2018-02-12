@@ -26,7 +26,7 @@
             android:fontFamily="sans-serif"
             android:gravity="center_vertical"
             android:padding="5dp"
-            android:text="@string/memory_quiz"
+            android:text="MemoryQuiz"
             android:textAlignment="center"
             android:textColor="@android:color/background_dark"
             android:textSize="50sp"
