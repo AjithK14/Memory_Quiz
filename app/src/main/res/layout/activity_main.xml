@@ -95,7 +95,8 @@
                 android:backgroundTint="@android:color/holo_purple"
                 android:padding="8dp"
                 android:text="@string/info"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:visibility=" " />
 
         </LinearLayout>
 

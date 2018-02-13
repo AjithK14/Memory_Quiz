@@ -79,7 +79,7 @@ public class GameActivity extends AppCompatActivity {
 
     protected void onDestroy() {
         super.onDestroy();
-        DATABASEFINAL.done(getApplicationContext());
+        //DATABASEFINAL.done(getApplicationContext());
         Log.d("out", "WE OUT");
     }
     public void showRightDialog()

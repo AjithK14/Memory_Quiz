@@ -62,7 +62,8 @@
             android:name=".GameActivity"
             android:screenOrientation="portrait" />
         <!-- optional (needed if default theme has no action bar) -->
-        <activity android:name=".GameComplete"></activity>
+        <activity android:name=".GameComplete" />
+        <activity android:name=".RenameDelete"></activity>
     </application>
 
 </manifest>

@@ -27,13 +27,16 @@ import java.util.ArrayList;
  */
 
 public class CustomListView extends ArrayAdapter<String>{
-    private ArrayList<String> names = DATABASEFINAL.answers;
-    private ArrayList<String> facePics = DATABASEFINAL.faces;
+    private ArrayList<String> names;
+    private ArrayList<String> facePics;
     private Activity context;
     public CustomListView(Activity context)
     {
         super(context,R.layout.listview_layout);
         this.context=context;
+        DATABASEFINAL.readFromFile(getContext());
+         names= DATABASEFINAL.answers;
+         facePics= DATABASEFINAL.faces;
     }
 
     @NonNull
@@ -44,7 +47,7 @@ public class CustomListView extends ArrayAdapter<String>{
         if (r == null)
         {
             LayoutInflater layoutInflater = context.getLayoutInflater();
-            r = layoutInflater.inflate(R.layout.listview_layout,null,true);
+            r = layoutInflater.inflate(R.layout.listview_layout,parent,false);
             viewHolder = new ViewHolder(r);
             r.setTag(viewHolder);
         }
