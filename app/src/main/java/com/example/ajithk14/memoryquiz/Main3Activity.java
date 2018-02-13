@@ -111,8 +111,32 @@ public class Main3Activity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (imageView.getDrawable()==null)
+                {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            Main3Activity.this);
 
-                changeActivities();
+                    // set title
+                    alertDialogBuilder.setTitle("SORRY!");
+
+                    // set dialog message
+                    alertDialogBuilder
+                            .setMessage("You need to enter an image first!")
+                            .setCancelable(false)
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+
+                    // create alert dialog
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+
+                    // show it
+                    alertDialog.show();
+                }
+                else{
+                changeActivities();}
                 /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
             }

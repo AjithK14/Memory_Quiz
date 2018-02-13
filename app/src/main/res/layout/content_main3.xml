@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/darker_gray"
     android:backgroundTint="@android:color/darker_gray"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.ajithk14.memoryquiz.Main3Activity"
     tools:showIn="@layout/activity_main3">

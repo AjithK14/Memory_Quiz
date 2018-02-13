@@ -7,10 +7,12 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -197,43 +199,65 @@ public class GameActivity extends AppCompatActivity {
         tempB = ((ColorDrawable) arr[correct_answer].getBackground()).getColor();
 
         arr[correct_answer].setBackgroundColor(Color.GREEN);
+        int tmp = (correct_answer+1)%4;
+        arr[correct_answer].setEnabled(false);
+        while (tmp!=correct_answer)
+        {
+            arr[tmp].setEnabled(false);
+            tmp=(tmp+1)%4;
+        }
         ObjectAnimator anim = ObjectAnimator.ofInt(arr[correct_answer],"backgroundColor",Color.WHITE, Color.GREEN,Color.WHITE);
-        anim.setDuration(400);
+        anim.setDuration(500);
         anim.setEvaluator(new ArgbEvaluator());
         anim.setRepeatCount(2);
         anim.start();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        GameActivity.this);
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                GameActivity.this);
+                // set title
+                alertDialogBuilder.setTitle("WRONG!");
+                Log.d("suh",""+turn);
+                // set dialog message
+                alertDialogBuilder
+                        .setMessage("The correct answer is actually "+arr[correct_answer].getText())
+                        .setCancelable(false)
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                                arr[correct_answer].setBackgroundColor(tempB);
+                                if (turn < 10)
+                                {
+                                    turn++;
+                                    int tmp = correct_answer+1;
+                                    tmp=tmp%4;
+                                    arr[correct_answer].setEnabled(true);
+                                    while (tmp!=correct_answer)
+                                    {
+                                        arr[tmp].setEnabled(true);
+                                        tmp=(tmp+1)%4;
+                                    }
+                                    newQuestion(turn%list.size());
+                                }
+                                else
+                                {
+                                    gameFinished();
+                                }
+                            }
+                        });
 
-        // set title
-        alertDialogBuilder.setTitle("WRONG!");
-        Log.d("suh",""+turn);
-        // set dialog message
-        alertDialogBuilder
-                .setMessage("The correct answer is actually "+arr[correct_answer].getText())
-                .setCancelable(false)
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                        arr[correct_answer].setBackgroundColor(tempB);
-                        if (turn < 10)
-                        {
-                            turn++;
-                            newQuestion(turn%list.size());
-                        }
-                        else
-                        {
-                            gameFinished();
-                        }
-                    }
-                });
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
 
-        // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
+                // show it
+                alertDialog.show();
+            }
+        }, 1000);
 
-        // show it
-        alertDialog.show();
         /*
         for (int k = 0; k < 6; k++)
         {
@@ -258,10 +282,15 @@ public class GameActivity extends AppCompatActivity {
     {
         Log.d("right",""+correct);
         Log.d("missed",""+wrong);
-        finish();
+        Intent myIntent = new Intent(GameActivity.this, GameComplete.class);
+        myIntent.putExtra("right", correct);
+        myIntent.putExtra("wrong",wrong);
+        startActivity(myIntent);
+        //finish();
     }
     private void newQuestion(int num)
     {
+        Log.d("whereweat",""+turn);
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         File path1 = cw.getDir("imageDir", Context.MODE_PRIVATE);
         File f = new File(path1, list.get((num)).image);
