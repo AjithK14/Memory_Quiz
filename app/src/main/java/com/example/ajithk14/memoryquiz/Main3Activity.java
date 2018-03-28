@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import android.os.Environment;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.provider.SyncStateContract;
@@ -32,6 +33,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.soundcloud.android.crop.Crop;
@@ -56,6 +59,12 @@ public class Main3Activity extends AppCompatActivity {
     Intent CamIntent,GalIntent,CropIntent;
     public Uri imageUri;
     File file;
+
+    private ProgressBar progressBar;
+    private TextView loadingText;
+    private int progStatus=0;
+    private Handler mhand = new Handler();
+
     final int CAMERA_CAPTURE = 1;
     Uri uri;
     Bitmap bitmap;
@@ -79,7 +88,10 @@ public class Main3Activity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mCropImageView = new CropImageView(getApplicationContext());
-
+        progressBar=(ProgressBar)findViewById(R.id.progressBar);
+        loadingText=(TextView)findViewById(R.id.loadingComplete);
+        progressBar.setVisibility(View.GONE);
+        loadingText.setVisibility(View.GONE);
         imageView = (ImageView) findViewById(R.id.imageView);
         THEbitmap=null;
         //int permis = ContextCompat.checkSelfPermission(Main3Activity.this,
@@ -136,7 +148,11 @@ public class Main3Activity extends AppCompatActivity {
                     alertDialog.show();
                 }
                 else{
-                changeActivities();}
+                    progressBar.setVisibility(View.VISIBLE);
+
+                    showProgress();
+                //changeActivities();
+                }
                 /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
             }
@@ -161,7 +177,32 @@ public class Main3Activity extends AppCompatActivity {
         startActivityForResult(CamIntent,CAMERA_CAPTURE);
     }
 
-
+    public void showProgress()
+    {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (progStatus < 100)
+                {
+                    progStatus++;
+                    android.os.SystemClock.sleep(50);
+                    mhand.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setProgress(progStatus);
+                        }
+                    });
+                }
+                mhand.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadingText.setVisibility(View.VISIBLE);
+                        changeActivities();
+                    }
+                });
+            }
+        }).start();
+    }
     private void CropImage() {
 
         try{

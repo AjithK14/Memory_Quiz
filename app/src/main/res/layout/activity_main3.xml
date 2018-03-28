@@ -9,6 +9,7 @@
     android:orientation="vertical"
     tools:context="com.example.ajithk14.memoryquiz.Main3Activity">
 
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
