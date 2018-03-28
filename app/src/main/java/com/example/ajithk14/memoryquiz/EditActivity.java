@@ -107,7 +107,7 @@ public class EditActivity extends AppCompatActivity {
             if(origWidth > destWidth){
                 diff=true;
                 // picture is wider than we want it, we calculate its target height
-                int destHeight = origHeight/( origWidth / destWidth ) ;
+                int destHeight = destWidth;//origHeight/( origWidth / destWidth ) ;
                 // we create an scaled bitmap so it reduces the image, not just trim it
                 b2 = Bitmap.createScaledBitmap(b, destWidth, destHeight, false);}
             if (diff){
