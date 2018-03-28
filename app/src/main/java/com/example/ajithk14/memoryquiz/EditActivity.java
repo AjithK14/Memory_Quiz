@@ -102,7 +102,7 @@ public class EditActivity extends AppCompatActivity {
             int origWidth = b.getWidth();
             int origHeight = b.getHeight();
 
-            final int destWidth = 400;//or the width you need
+            final int destWidth = 350;//or the width you need
             boolean diff = false;
             if(origWidth > destWidth){
                 diff=true;
