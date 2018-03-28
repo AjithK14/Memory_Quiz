@@ -96,7 +96,7 @@
                 android:padding="8dp"
                 android:text="@string/info"
                 android:textSize="30sp"
-                />
+                android:visibility="invisible"/>
 
         </LinearLayout>
 
