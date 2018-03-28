@@ -87,4 +87,31 @@ public class RenameDelete extends AppCompatActivity {
         DATABASEFINAL.done(getApplicationContext());
         startActivity(new Intent(getApplicationContext(),MainActivity.class));
     }
+    public void onDelete(View view)
+    {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        int tempo = DATABASEFINAL.faces.indexOf(filename);
+                        DATABASEFINAL.answers.remove(tempo);
+                        DATABASEFINAL.faces.remove(tempo);
+                        DATABASEFINAL.done(getApplicationContext());
+                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+        builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
+        DATABASEFINAL.readFromFile(getApplicationContext());
+
+    }
 }
