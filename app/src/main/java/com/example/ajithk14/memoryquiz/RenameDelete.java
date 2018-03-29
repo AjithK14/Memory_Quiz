@@ -89,6 +89,26 @@ public class RenameDelete extends AppCompatActivity {
     }
     public void onDelete(View view)
     {
+        DATABASEFINAL.readFromFile(getApplicationContext());
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Deleting Image")
+                .setMessage("Are you sure you want to delete this image? Quizzes will no longer contain this image")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int tempo = DATABASEFINAL.faces.indexOf(filename);
+                        DATABASEFINAL.answers.remove(tempo);
+                        DATABASEFINAL.faces.remove(tempo);
+                        DATABASEFINAL.done(getApplicationContext());
+                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                    }
+
+                })
+                .setNegativeButton("No", null)
+                .show();
+        /*
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -111,7 +131,7 @@ public class RenameDelete extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
         builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
                 .setNegativeButton("No", dialogClickListener).show();
-        DATABASEFINAL.readFromFile(getApplicationContext());
+        */
 
     }
 }
