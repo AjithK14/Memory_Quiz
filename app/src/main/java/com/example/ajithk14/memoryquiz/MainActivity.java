@@ -31,6 +31,36 @@ public class MainActivity extends AppCompatActivity{
         DATABASEFINAL.done(getApplicationContext());
         Log.d("out", "WE OUT");
     }
+    public void info(View v)
+    {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                MainActivity.this);
+
+        // set title
+        alertDialogBuilder.setTitle("Instructions");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("Welcome! This app is designed for you to be able to make quizzes for potential dementia" +
+                        " patients who you care for and would like to be able to remember information about all" +
+                        " of their loved ones. " + "\n" +  "\n" + "Usage of this app is simple: " + "\n" + "\n" +"Take pictures of faces you would like" +
+                " for the quizzes to be on with the camera app in this phone." + "\n" + "Then click the add button to add the faces one by one."
+                + "\n" + "You can crop these images to capture only the face. " + "\n" + "Then enter information about the face. Repeatedly do this "
+                + "until all of the faces you want are in the database. " + "\n"+"You can delete and edit information as necessary with the edit button and "
+                + "click play to take quizzes.")
+                .setCancelable(false)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }
     public void onClick(View v)
     {
         Button button = (Button) v;
