@@ -101,6 +101,7 @@ public class Main2Activity extends AppCompatActivity {
                 DATABASEFINAL.readFromFile(getApplicationContext());
             }
             DATABASEFINAL.faces.add(name);
+            DATABASEFINAL.scores.add(0);
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                     Main2Activity.this);
 

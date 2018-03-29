@@ -18,6 +18,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -46,6 +47,7 @@ public class GameActivity extends AppCompatActivity {
     int wrong = 0;
     public Button[] arr;
     public String THERIGHTANSWER;
+    public int THERIGHTINDEX;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +72,7 @@ public class GameActivity extends AppCompatActivity {
 
         for (int i = 0; i < DATABASEFINAL.answers.size(); i++)
         {
-            list.add(new FaceItem(DATABASEFINAL.answers.get(i),DATABASEFINAL.faces.get(i)));
+            list.add(new FaceItem(DATABASEFINAL.answers.get(i),DATABASEFINAL.faces.get(i),i));
         }
 
         Collections.shuffle(list);
@@ -79,11 +81,13 @@ public class GameActivity extends AppCompatActivity {
 
     protected void onDestroy() {
         super.onDestroy();
-        //DATABASEFINAL.done(getApplicationContext());
+        DATABASEFINAL.done(getApplicationContext());
         Log.d("out", "WE OUT");
     }
     public void showRightDialog()
     {
+        Log.e("answers", (TextUtils.join(", ",DATABASEFINAL.answers)));
+        Log.e("scores", (TextUtils.join(", ",DATABASEFINAL.scores)));
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 GameActivity.this);
 
@@ -126,7 +130,9 @@ public class GameActivity extends AppCompatActivity {
         if (A.getText().toString().equals(THERIGHTANSWER))
         {
             correctProtocol();
+            DATABASEFINAL.scores.set(THERIGHTINDEX,DATABASEFINAL.scores.get(THERIGHTINDEX)+1);
             showRightDialog();
+
             correct++;
 
 
@@ -145,8 +151,10 @@ public class GameActivity extends AppCompatActivity {
         if (B.getText().toString().equals(THERIGHTANSWER))
         {
             faceImg.setImageResource(R.drawable.check);
+            DATABASEFINAL.scores.set(THERIGHTINDEX,DATABASEFINAL.scores.get(THERIGHTINDEX)+1);
             showRightDialog();
             correct++;
+
         }
         else
         {
@@ -163,6 +171,7 @@ public class GameActivity extends AppCompatActivity {
         if (C.getText().toString().equals(THERIGHTANSWER))
         {
             faceImg.setImageResource(R.drawable.check);
+            DATABASEFINAL.scores.set(THERIGHTINDEX,DATABASEFINAL.scores.get(THERIGHTINDEX)+1);
             showRightDialog();
             correct++;
 
@@ -181,6 +190,7 @@ public class GameActivity extends AppCompatActivity {
         if (D.getText().toString().equals(THERIGHTANSWER))
         {
             faceImg.setImageResource(R.drawable.check);
+            DATABASEFINAL.scores.set(THERIGHTINDEX,DATABASEFINAL.scores.get(THERIGHTINDEX)+1);
             showRightDialog();
             correct++;
 
@@ -309,5 +319,6 @@ public class GameActivity extends AppCompatActivity {
         }
         Log.d("right answer", list.get(num).name);
         THERIGHTANSWER=list.get(num).name;
+        THERIGHTINDEX = list.get(num).index;
     }
 }

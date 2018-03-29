@@ -71,6 +71,10 @@ public class MainActivity extends AppCompatActivity{
     {
         startActivity(new Intent(getApplicationContext(),EditActivity.class));
     }
+    public void onClickStats(View v)
+    {
+        startActivity(new Intent(getApplicationContext(),actualstatsactivity.class));
+    }
     public void onClickPlay(View v)
     {
         DATABASEFINAL.readFromFile(getApplicationContext());

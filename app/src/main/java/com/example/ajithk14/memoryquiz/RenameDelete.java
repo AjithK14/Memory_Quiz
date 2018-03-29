@@ -100,6 +100,7 @@ public class RenameDelete extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         int tempo = DATABASEFINAL.faces.indexOf(filename);
                         DATABASEFINAL.answers.remove(tempo);
+                        DATABASEFINAL.scores.remove(tempo);
                         DATABASEFINAL.faces.remove(tempo);
                         DATABASEFINAL.done(getApplicationContext());
                         startActivity(new Intent(getApplicationContext(),MainActivity.class));

@@ -7,9 +7,11 @@ package com.example.ajithk14.memoryquiz;
 public class FaceItem {
     String name;
     String image;
-    public FaceItem(String name1, String image1)
+    int index;
+    public FaceItem(String name1, String image1, int ind)
     {
         name=name1;
         image=image1;
+        index = ind;
     }
 }

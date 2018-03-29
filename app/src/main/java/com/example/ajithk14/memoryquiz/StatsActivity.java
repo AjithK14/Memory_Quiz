@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -18,32 +17,27 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class EditActivity extends AppCompatActivity {
+public class StatsActivity extends AppCompatActivity {
 
     ListView lst;
     private String[] names;
     private String[] facePics;
-    private ArrayList<Integer> scores;
     Bitmap b2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit);
+        setContentView(R.layout.activity_stats);
         DATABASEFINAL.readFromFile(getApplicationContext());
         names= DATABASEFINAL.answers.toArray(new String[0]);
         facePics= DATABASEFINAL.faces.toArray(new String[0]);
-        scores= DATABASEFINAL.scores;
         lst = (ListView)findViewById(R.id.listview);
         CustomAdapter cust = new CustomAdapter();
         lst.setAdapter(cust);
@@ -90,11 +84,9 @@ public class EditActivity extends AppCompatActivity {
         public View getView(int i, View view, ViewGroup viewGroup) {
             view = getLayoutInflater().inflate(R.layout.listview_layout,null);
             TextView tvw1;
-            TextView tvw2;
-
             ImageView imw;
             tvw1=(TextView)view.findViewById(R.id.textView);
-            tvw2=(TextView)view.findViewById(R.id.textView2);
+
             imw = (ImageView) view.findViewById(R.id.imageView6);
             ContextWrapper cw = new ContextWrapper(getApplicationContext());
             File path1 = cw.getDir("imageDir", Context.MODE_PRIVATE);
@@ -125,17 +117,14 @@ public class EditActivity extends AppCompatActivity {
                 imw.setImageBitmap(b);
             }
             //imw.setImageBitmap(b);
-            final String first = names[i];
-            String next = "Score: " + Integer.toString(scores.get(i));
-            tvw1.setText(first);
-            tvw2.setText(next);
-            //final String tv = (String) tvw1.getText();
+            tvw1.setText(names[i]);
+            final String tv = (String) tvw1.getText();
             Button bt9 = (Button)view.findViewById(R.id.button9);
             bt9.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent i = new Intent(EditActivity.this, RenameDelete.class);
-                    i.putExtra("personName",first.replace("\n",""));
+                    Intent i = new Intent(StatsActivity.this, RenameDelete.class);
+                    i.putExtra("personName",tv);
                     i.putExtra("picName", pickName);
                     startActivity(i);
                 }
