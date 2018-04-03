@@ -50,7 +50,7 @@ public class AddImage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.AddImage);
+        setContentView(R.layout.addimage);
         Intent receivedIntent = getIntent();
         myLayout = (ConstraintLayout)findViewById(R.id.myLayout);
         myDraw=(AnimationDrawable)myLayout.getBackground();

@@ -76,7 +76,7 @@ public class ChooseImage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.chooseImage);
+        setContentView(R.layout.chooseimage);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mCropImageView = new CropImageView(getApplicationContext());

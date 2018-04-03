@@ -16,7 +16,7 @@ public class StartScreen extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.startScreen);
+        setContentView(R.layout.startscreen);
         myLayout = (ConstraintLayout)findViewById(R.id.myLayout);
         myDraw=(AnimationDrawable)myLayout.getBackground();
         myDraw.setEnterFadeDuration(4500);

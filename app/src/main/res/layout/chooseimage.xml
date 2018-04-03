@@ -27,7 +27,7 @@
 
     <include
         android:id="@+id/include"
-        layout="@layout/AddImageContent" />
+        layout="@layout/addimagecontent" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
