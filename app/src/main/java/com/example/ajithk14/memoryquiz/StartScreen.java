@@ -67,7 +67,32 @@ public class StartScreen extends AppCompatActivity{
     }
     public void onClickEdit(View v)
     {
-        startActivity(new Intent(getApplicationContext(),EditActivity.class));
+        DATABASEFINAL.readFromFile(getApplicationContext());
+        if (DATABASEFINAL.answers.size()==0) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                    StartScreen.this);
+
+            // set title
+            alertDialogBuilder.setTitle("SORRY!");
+
+            // set dialog message
+            alertDialogBuilder
+                    .setMessage("You need to enter some names first!")
+                    .setCancelable(false)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+        }
+        else{
+            startActivity(new Intent(getApplicationContext(),EditActivity.class));}
     }
     public void onClickStats(View v)
     {
