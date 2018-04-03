@@ -71,7 +71,7 @@ public class StartScreen extends AppCompatActivity{
     }
     public void onClickStats(View v)
     {
-        startActivity(new Intent(getApplicationContext(),actualstatsactivity.class));
+        startActivity(new Intent(getApplicationContext(),StatsActivity.class));
     }
     public void onClickPlay(View v)
     {

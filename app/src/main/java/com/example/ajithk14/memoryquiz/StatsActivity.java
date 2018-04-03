@@ -1,5 +1,9 @@
 package com.example.ajithk14.memoryquiz;
 
+
+//unfinished
+
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 /*
@@ -21,11 +25,11 @@ Text that says to view scores of specific pics
 go to edit page
 
  */
-public class actualstatsactivity extends AppCompatActivity {
+public class StatsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_actualstatsactivity);
+        setContentView(R.layout.activity_statsactivity);
     }
 }
