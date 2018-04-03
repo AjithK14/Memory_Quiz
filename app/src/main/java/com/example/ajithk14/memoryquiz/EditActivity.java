@@ -34,7 +34,7 @@ public class EditActivity extends AppCompatActivity {
     ListView lst;
     private String[] names;
     private String[] facePics;
-    private ArrayList<Integer> scores;
+    private ArrayList<Integer> missed;
     Bitmap b2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class EditActivity extends AppCompatActivity {
         DATABASEFINAL.readFromFile(getApplicationContext());
         names= DATABASEFINAL.answers.toArray(new String[0]);
         facePics= DATABASEFINAL.faces.toArray(new String[0]);
-        scores= DATABASEFINAL.scores;
+        missed= DATABASEFINAL.missed;
         lst = (ListView)findViewById(R.id.listview);
         CustomAdapter cust = new CustomAdapter();
         lst.setAdapter(cust);
@@ -126,7 +126,8 @@ public class EditActivity extends AppCompatActivity {
             }
             //imw.setImageBitmap(b);
             final String first = names[i];
-            String next = "Score: " + Integer.toString(scores.get(i));
+            //String next = "Missed: " + Integer.toString(missed.get(i)) + " times";
+            String next = "";
             tvw1.setText(first);
             tvw2.setText(next);
             //final String tv = (String) tvw1.getText();

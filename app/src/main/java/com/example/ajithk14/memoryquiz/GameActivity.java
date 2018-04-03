@@ -87,7 +87,7 @@ public class GameActivity extends AppCompatActivity {
     public void showRightDialog()
     {
         Log.e("answers", (TextUtils.join(", ",DATABASEFINAL.answers)));
-        Log.e("scores", (TextUtils.join(", ",DATABASEFINAL.scores)));
+        Log.e("missed", (TextUtils.join(", ",DATABASEFINAL.missed)));
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 GameActivity.this);
 
@@ -130,7 +130,7 @@ public class GameActivity extends AppCompatActivity {
         if (A.getText().toString().equals(THERIGHTANSWER))
         {
             correctProtocol();
-            DATABASEFINAL.scores.set(THERIGHTINDEX,DATABASEFINAL.scores.get(THERIGHTINDEX)+1);
+
             showRightDialog();
 
             correct++;
@@ -140,6 +140,7 @@ public class GameActivity extends AppCompatActivity {
         else
         {
             wrong++;
+            DATABASEFINAL.missed.set(THERIGHTINDEX,DATABASEFINAL.missed.get(THERIGHTINDEX)+1);
             faceImg.setImageResource(R.drawable.wrong);
             flashRightWrong();
 
@@ -151,7 +152,7 @@ public class GameActivity extends AppCompatActivity {
         if (B.getText().toString().equals(THERIGHTANSWER))
         {
             faceImg.setImageResource(R.drawable.check);
-            DATABASEFINAL.scores.set(THERIGHTINDEX,DATABASEFINAL.scores.get(THERIGHTINDEX)+1);
+
             showRightDialog();
             correct++;
 
@@ -159,6 +160,7 @@ public class GameActivity extends AppCompatActivity {
         else
         {
             wrong++;
+            DATABASEFINAL.missed.set(THERIGHTINDEX,DATABASEFINAL.missed.get(THERIGHTINDEX)+1);
             faceImg.setImageResource(R.drawable.wrong);
             flashRightWrong();
 
@@ -171,7 +173,7 @@ public class GameActivity extends AppCompatActivity {
         if (C.getText().toString().equals(THERIGHTANSWER))
         {
             faceImg.setImageResource(R.drawable.check);
-            DATABASEFINAL.scores.set(THERIGHTINDEX,DATABASEFINAL.scores.get(THERIGHTINDEX)+1);
+
             showRightDialog();
             correct++;
 
@@ -179,6 +181,7 @@ public class GameActivity extends AppCompatActivity {
         else
         {
             wrong++;
+            DATABASEFINAL.missed.set(THERIGHTINDEX,DATABASEFINAL.missed.get(THERIGHTINDEX)+1);
             faceImg.setImageResource(R.drawable.wrong);
             flashRightWrong();
 
@@ -190,7 +193,7 @@ public class GameActivity extends AppCompatActivity {
         if (D.getText().toString().equals(THERIGHTANSWER))
         {
             faceImg.setImageResource(R.drawable.check);
-            DATABASEFINAL.scores.set(THERIGHTINDEX,DATABASEFINAL.scores.get(THERIGHTINDEX)+1);
+
             showRightDialog();
             correct++;
 
@@ -198,6 +201,7 @@ public class GameActivity extends AppCompatActivity {
         else
         {
             wrong++;
+            DATABASEFINAL.missed.set(THERIGHTINDEX,DATABASEFINAL.missed.get(THERIGHTINDEX)+1);
             faceImg.setImageResource(R.drawable.wrong);
             flashRightWrong();
 

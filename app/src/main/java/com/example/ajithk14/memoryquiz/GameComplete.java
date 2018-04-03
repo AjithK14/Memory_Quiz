@@ -13,6 +13,7 @@ public class GameComplete extends AppCompatActivity {
     AnimationDrawable myDraw;
     TextView rightans;
     TextView wrongans;
+    TextView remark;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +28,8 @@ public class GameComplete extends AppCompatActivity {
         int right = mIntent.getIntExtra("right", 0);
         rightans = (TextView)findViewById(R.id.textView8);
         wrongans = (TextView)findViewById(R.id.textView9);
+        remark = (TextView)findViewById(R.id.textView4);
+        remark.setText(right > wrong ? "Congratulations!" : "Better Luck next time!");
         rightans.setText("Right: "+right);
         wrongans.setText("Wrong: "+wrong);
     }

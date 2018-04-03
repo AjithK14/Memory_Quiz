@@ -2,6 +2,9 @@ package com.example.ajithk14.memoryquiz;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import java.util.Collections;
+
 /*
 most missed
 
@@ -27,5 +30,12 @@ public class actualstatsactivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actualstatsactivity);
+        DATABASEFINAL.readFromFile(getApplicationContext());
+        //int minIndex = DATABASEFINAL.scores.indexOf(Collections.min(DATABASEFINAL.scores));
+
+        /*
+        https://www.youtube.com/watch?v=i-35fEBiYYg
+         */
+
     }
 }

@@ -29,7 +29,7 @@ public class DATABASEFINAL {
 
     static ArrayList<String> faces = new ArrayList<String>();
     static ArrayList<String> answers = new ArrayList<String>();
-    static ArrayList<Integer> scores = new ArrayList<>();
+    static ArrayList<Integer> missed = new ArrayList<>(); //counts number of times each person's name has been asked in a question and missed
     FileInputStream fis;
     final StringBuffer storedString = new StringBuffer();
     public static void done(Context context)
@@ -81,12 +81,12 @@ public class DATABASEFINAL {
             {
                 direct.mkdirs();
             }
-            File file = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo","actualScores.txt");
+            File file = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo","missedNames.txt");
 
             FileOutputStream output = new FileOutputStream(file, false);
 
             //OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("facesNames.txt", Context.MODE_PRIVATE));
-            for (int x: scores) {
+            for (int x: missed) {
                 //Log.d("face",x);
                 output.write((Integer.toString(x) + '\n').getBytes());
             }
@@ -101,7 +101,7 @@ public class DATABASEFINAL {
         //String ret = "";
         faces = new ArrayList<>();
         answers = new ArrayList<>();
-        scores = new ArrayList<>();
+        missed = new ArrayList<>();
         try {
             File direct = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
             if (!direct.exists())
@@ -152,7 +152,7 @@ public class DATABASEFINAL {
             {
                 direct3.mkdirs();
             }
-            File file3 = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo","actualScores.txt");
+            File file3 = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo","missedNames.txt");
 
             FileInputStream inputStream3 = new FileInputStream(file3);
 
@@ -162,7 +162,7 @@ public class DATABASEFINAL {
 
             String line3 = reader3.readLine();
             while(line3 != null){
-                scores.add(Integer.parseInt(line3.replace("\n","")));
+                missed.add(Integer.parseInt(line3.replace("\n","")));
                 Log.d("reading..", line3);
                 line3 = reader3.readLine();
             }

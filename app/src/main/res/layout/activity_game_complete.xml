@@ -9,8 +9,8 @@
     tools:context="com.example.ajithk14.memoryquiz.GameComplete">
 
     <LinearLayout
-        android:layout_width="463dp"
-        android:layout_height="366dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -25,7 +25,6 @@
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="136dp"
-            android:text="Congratulations!"
             android:textAlignment="center"
             android:textAppearance="@android:style/TextAppearance.Material.Large"
             android:textSize="50sp"
@@ -51,23 +50,6 @@
             android:textSize="50sp"
             android:textStyle="bold" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="305dp"
-        android:layout_height="178dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.96">
-
         <Button
             android:id="@+id/button11"
             android:layout_width="match_parent"
@@ -77,6 +59,7 @@
             android:onClick="playAgain"
             android:text="PLAY AGAIN"
             android:textSize="24sp" />
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -92,7 +75,6 @@
             android:text="DONE"
             android:textSize="24sp" />
 
-
-
     </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>
