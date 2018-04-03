@@ -113,7 +113,11 @@ public class AddImage extends AppCompatActivity {
                             DATABASEFINAL.done(getApplicationContext());
                             Log.d("stuff", Arrays.toString(DATABASEFINAL.answers.toArray()));
                             Log.d("stuff", Arrays.toString(DATABASEFINAL.faces.toArray()));
-                            startActivity(new Intent(getApplicationContext(), StartScreen.class));
+                            Intent i = new Intent(AddImage.this, RenameDelete.class);
+                            i.putExtra("personName",et.getText().toString().replace("\n",""));
+                            i.putExtra("picName", name);
+                            startActivity(i);
+                            //startActivity(new Intent(getApplicationContext(), RenameDelete.class));
                             dialog.dismiss();
                         }
                     });
