@@ -36,6 +36,18 @@ import java.util.Random;
 
 public class GameActivity extends AppCompatActivity {
 
+    /*
+    READ IN ALL THE FACES AND THEIR NAMES
+    SHUFFLE THE FACES
+    FOR THE FUTURE WE NEED TO INCREASE THE FREQUENCY OF THE MOST MISSED FACES
+     */
+
+    /*
+    THE ONCLICK METHOD FOR EACH BUTTON ESSENTIALLY SEES IF THE RIGHT ANSWER HAS BEEN SELECTED
+    THEN IT PERFORMS AN ANIMATION BASED ON THE CORRECTNESS OF THE ANSWER
+    THEN IT SEES IF 10 QUESTIONS HAVE BEEN ASKED AND ENDS THE GAME ACCORDINGLY
+     */
+
     Button A, B, C, D;
     ImageView faceImg;
     List<FaceItem> list = new ArrayList<>();
@@ -58,12 +70,16 @@ public class GameActivity extends AppCompatActivity {
         r=new Random();
         int permis = ContextCompat.checkSelfPermission(GameActivity.this,
                 Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        //EACH OPTION
         A = (Button)findViewById(R.id.optionA);
         B= (Button)findViewById(R.id.optionB);
         C = (Button)findViewById(R.id.optionC);
         D = (Button)findViewById(R.id.optionD);
 
         arr = new Button[]{A,B,C,D};
+
+        //FILL UP CONTENTS OF ARRAY
 
         if (DATABASEFINAL.answers.size()==0){
             //Log.d("apparently this is zero", "FE");
@@ -75,7 +91,10 @@ public class GameActivity extends AppCompatActivity {
             list.add(new FaceItem(DATABASEFINAL.answers.get(i),DATABASEFINAL.faces.get(i),i));
         }
 
+        //FOR NOW WE ARE SHUFFLING BUT LATER WE NEED TO ASK THE MOST MISSED MORE OFTEN
         Collections.shuffle(list);
+
+        //GIVE THE USER A QUESTION
         newQuestion(turn%list.size());
     }
 
@@ -300,6 +319,10 @@ public class GameActivity extends AppCompatActivity {
     }
     private void newQuestion(int num)
     {
+        /*
+        FIND THE IMAGE IN THE DATABASE ARRAY  AND
+         */
+
         Log.d("whereweat",""+turn);
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         File path1 = cw.getDir("imageDir", Context.MODE_PRIVATE);

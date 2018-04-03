@@ -30,6 +30,17 @@ public class DATABASEFINAL {
     static ArrayList<String> faces = new ArrayList<String>();
     static ArrayList<String> answers = new ArrayList<String>();
     static ArrayList<Integer> scores = new ArrayList<>();
+
+    /*
+
+    MOST IMPORTANT FILE
+    CREATES TEXT FILES TO STORE INFORMATION FOR EACH OF THESE ARRAYS
+    EVERY TIME THE USER PERFORMS AN ACTION THE VALUES IN THESE ARRAYLISTS AND TEXT FILES ARE UPDATED
+
+    THE DONE METHOD WILL WRITE THE CONTENTS OF THESE ARRAYS TO THEIR RESPECTIVE TEXT FILES AND
+    THE READFROMFILEMETHOD WILL FILL UP THESE ARRAYLISTS WITH THE CORRECT CONTENT
+
+     */
     FileInputStream fis;
     final StringBuffer storedString = new StringBuffer();
     public static void done(Context context)

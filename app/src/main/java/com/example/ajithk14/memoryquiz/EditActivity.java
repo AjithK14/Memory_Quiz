@@ -92,6 +92,9 @@ public class EditActivity extends AppCompatActivity {
             TextView tvw1;
             TextView tvw2;
 
+            /*
+            for every row in the edit activity list get the image through facePics array
+             */
             ImageView imw;
             tvw1=(TextView)view.findViewById(R.id.textView);
             tvw2=(TextView)view.findViewById(R.id.textView2);
@@ -106,7 +109,12 @@ public class EditActivity extends AppCompatActivity {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-// original measurements
+
+            /*
+            Code to scale image bitmap
+             */
+
+            // original measurements
             int origWidth = b.getWidth();
             int origHeight = b.getHeight();
 
@@ -125,6 +133,9 @@ public class EditActivity extends AppCompatActivity {
                 imw.setImageBitmap(b);
             }
             //imw.setImageBitmap(b);
+
+
+
             final String first = names[i];
             String next = "Score: " + Integer.toString(scores.get(i));
             tvw1.setText(first);
