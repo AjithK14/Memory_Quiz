@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".StartScreen"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,19 +28,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Main2Activity"
+            android:name=".AddImage"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Main3Activity"
+            android:name=".ChooseImage"
             android:label="@string/app_name"
-            android:parentActivityName=".Main2Activity"
+            android:parentActivityName=".AddImage"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.ajithk14.memoryquiz.Main2Activity" />
+                android:value="com.example.ajithk14.memoryquiz.AddImage" />
         </activity>
 
         <provider
@@ -56,7 +56,6 @@
         <activity
             android:name=".EditActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".KeepOrDisc" />
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity
             android:name=".GameActivity"

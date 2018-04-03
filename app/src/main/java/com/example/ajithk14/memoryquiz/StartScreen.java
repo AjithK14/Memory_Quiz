@@ -10,15 +10,13 @@ import android.view.*;
 import android.widget.*;
 import android.content.*;
 
-import java.util.Arrays;
-
-public class MainActivity extends AppCompatActivity{
+public class StartScreen extends AppCompatActivity{
     ConstraintLayout myLayout;
     AnimationDrawable myDraw;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.startScreen);
         myLayout = (ConstraintLayout)findViewById(R.id.myLayout);
         myDraw=(AnimationDrawable)myLayout.getBackground();
         myDraw.setEnterFadeDuration(4500);
@@ -34,7 +32,7 @@ public class MainActivity extends AppCompatActivity{
     public void info(View v)
     {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                MainActivity.this);
+                StartScreen.this);
 
         // set title
         alertDialogBuilder.setTitle("Instructions");
@@ -64,7 +62,7 @@ public class MainActivity extends AppCompatActivity{
     public void onClick(View v)
     {
         Button button = (Button) v;
-        startActivity(new Intent(getApplicationContext(),Main3Activity.class));
+        startActivity(new Intent(getApplicationContext(),ChooseImage.class));
 
     }
     public void onClickEdit(View v)
@@ -80,7 +78,7 @@ public class MainActivity extends AppCompatActivity{
         DATABASEFINAL.readFromFile(getApplicationContext());
         if (DATABASEFINAL.answers.size()==0) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                    MainActivity.this);
+                    StartScreen.this);
 
             // set title
             alertDialogBuilder.setTitle("SORRY!");

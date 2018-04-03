@@ -1,33 +1,28 @@
 
 package com.example.ajithk14.memoryquiz;
 
-        import android.Manifest;
         import android.content.Context;
         import android.content.ContextWrapper;
         import android.content.DialogInterface;
         import android.content.Intent;
         import android.graphics.Bitmap;
         import android.graphics.BitmapFactory;
-        import android.graphics.Rect;
         import android.graphics.drawable.AnimationDrawable;
-        import android.media.FaceDetector;
+
         import com.soundcloud.android.crop.Crop;
-        import android.media.Image;
+
         import android.net.Uri;
         import android.os.Bundle;
         import android.support.constraint.ConstraintLayout;
-        import android.support.v4.content.ContextCompat;
         import android.support.v7.app.AlertDialog;
         import android.support.v7.app.AppCompatActivity;
         import android.util.Log;
         import android.view.Menu;
         import android.view.MenuItem;
-        import android.view.MotionEvent;
         import android.view.View;
         import android.widget.Button;
         import android.widget.EditText;
         import android.widget.ImageView;
-        import android.widget.TextView;
         import android.widget.Toast;
 
         import java.io.File;
@@ -37,12 +32,10 @@ package com.example.ajithk14.memoryquiz;
         import java.text.SimpleDateFormat;
         import java.util.Arrays;
         import java.util.Date;
-        import java.util.LinkedList;
 
 
-public class Main2Activity extends AppCompatActivity {
+public class AddImage extends AppCompatActivity {
 
-    DrawImageView imgView;
     public Bitmap b;
     Button formDone;
     Button discard;
@@ -57,7 +50,7 @@ public class Main2Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.AddImage);
         Intent receivedIntent = getIntent();
         myLayout = (ConstraintLayout)findViewById(R.id.myLayout);
         myDraw=(AnimationDrawable)myLayout.getBackground();
@@ -92,7 +85,7 @@ public class Main2Activity extends AppCompatActivity {
         {
             et.setHint("please enter name");//it gives user to hint
             et.setError("please enter name");//it gives user to info message //use any one //
-            Toast.makeText(Main2Activity.this,"Name required!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddImage.this,"Name required!", Toast.LENGTH_SHORT).show();
         }
         else {
             complete = true;
@@ -103,7 +96,7 @@ public class Main2Activity extends AppCompatActivity {
             DATABASEFINAL.faces.add(name);
             DATABASEFINAL.scores.add(0);
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                    Main2Activity.this);
+                    AddImage.this);
 
             // set title
             alertDialogBuilder.setTitle("DONE");
@@ -120,7 +113,7 @@ public class Main2Activity extends AppCompatActivity {
                             DATABASEFINAL.done(getApplicationContext());
                             Log.d("stuff", Arrays.toString(DATABASEFINAL.answers.toArray()));
                             Log.d("stuff", Arrays.toString(DATABASEFINAL.faces.toArray()));
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            startActivity(new Intent(getApplicationContext(), StartScreen.class));
                             dialog.dismiss();
                         }
                     });
@@ -143,7 +136,7 @@ public class Main2Activity extends AppCompatActivity {
     {
         if (true)
         {
-            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+            startActivity(new Intent(getApplicationContext(),StartScreen.class));
             complete = true;
             Log.d("stuff", Arrays.toString(DATABASEFINAL.answers.toArray()));
             //Intent in=new Intent(getApplicationContext(),second.class);

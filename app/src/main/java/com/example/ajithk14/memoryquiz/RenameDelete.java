@@ -64,7 +64,7 @@ public class RenameDelete extends AppCompatActivity {
                         DATABASEFINAL.answers.remove(tempo);
                         DATABASEFINAL.faces.remove(tempo);
                         DATABASEFINAL.done(getApplicationContext());
-                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                        startActivity(new Intent(getApplicationContext(),StartScreen.class));
 
                     }
                 });
@@ -85,7 +85,7 @@ public class RenameDelete extends AppCompatActivity {
         int tempo = DATABASEFINAL.faces.indexOf(filename);
         DATABASEFINAL.answers.set(tempo,myName.getText().toString());
         DATABASEFINAL.done(getApplicationContext());
-        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+        startActivity(new Intent(getApplicationContext(),StartScreen.class));
     }
     public void onDelete(View view)
     {
@@ -103,7 +103,7 @@ public class RenameDelete extends AppCompatActivity {
                         DATABASEFINAL.scores.remove(tempo);
                         DATABASEFINAL.faces.remove(tempo);
                         DATABASEFINAL.done(getApplicationContext());
-                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                        startActivity(new Intent(getApplicationContext(),StartScreen.class));
                     }
 
                 })
@@ -119,7 +119,7 @@ public class RenameDelete extends AppCompatActivity {
                         DATABASEFINAL.answers.remove(tempo);
                         DATABASEFINAL.faces.remove(tempo);
                         DATABASEFINAL.done(getApplicationContext());
-                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                        startActivity(new Intent(getApplicationContext(),StartScreen.class));
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:

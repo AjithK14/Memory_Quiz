@@ -32,7 +32,7 @@ public class GameComplete extends AppCompatActivity {
     }
     public void Done(View v)
     {
-        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+        startActivity(new Intent(getApplicationContext(),StartScreen.class));
     }
     public void playAgain(View v)
     {

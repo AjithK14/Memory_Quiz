@@ -7,8 +7,8 @@
     android:background="@android:color/darker_gray"
     android:backgroundTint="@android:color/darker_gray"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.ajithk14.memoryquiz.Main3Activity"
-    tools:showIn="@layout/activity_main3">
+    tools:context="com.example.ajithk14.memoryquiz.ChooseImage"
+    tools:showIn="@layout/chooseImage">
 
     <ImageView
         android:id="@+id/imageView"

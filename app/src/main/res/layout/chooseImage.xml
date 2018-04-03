@@ -7,7 +7,7 @@
     android:background="@android:color/darker_gray"
     android:backgroundTint="@android:color/darker_gray"
     android:orientation="vertical"
-    tools:context="com.example.ajithk14.memoryquiz.Main3Activity">
+    tools:context="com.example.ajithk14.memoryquiz.ChooseImage">
 
 
     <android.support.design.widget.AppBarLayout
@@ -27,7 +27,7 @@
 
     <include
         android:id="@+id/include"
-        layout="@layout/content_main3" />
+        layout="@layout/AddImageContent" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
