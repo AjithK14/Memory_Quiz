@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /*
 most missed
@@ -50,6 +51,7 @@ public class StatsActivity extends AppCompatActivity {
     private String[] facePics;
     Bitmap b2;
     private ArrayList<Integer> missed;
+    private ArrayList<FaceItem> ranks;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +60,11 @@ public class StatsActivity extends AppCompatActivity {
         names= DATABASEFINAL.answers.toArray(new String[0]);
         facePics= DATABASEFINAL.faces.toArray(new String[0]);
         missed= DATABASEFINAL.missed;
+        for (int i = 0; i < names.length; i++)
+        {
+            ranks.add(new FaceItem(names[i],facePics[i],i,missed.get(i)));
+        }
+        Collections.sort(ranks);
         lst = (ListView)findViewById(R.id.listview);
         StatsActivity.CustomAdapter cust = new StatsActivity.CustomAdapter();
         lst.setAdapter(cust);
@@ -115,8 +122,8 @@ public class StatsActivity extends AppCompatActivity {
             imw = (ImageView) view.findViewById(R.id.imageView6);
             ContextWrapper cw = new ContextWrapper(getApplicationContext());
             File path1 = cw.getDir("imageDir", Context.MODE_PRIVATE);
-            File f = new File(path1, facePics[i]);
-            final String pickName = facePics[i];
+            File f = new File(path1, ranks.get(i).image);
+            final String pickName = ranks.get(i).name;
             Bitmap b = null;
             try {
                 b = BitmapFactory.decodeStream(new FileInputStream(f));
@@ -150,12 +157,14 @@ public class StatsActivity extends AppCompatActivity {
 
 
 
-            final String first = names[i];
-            String next = "Missed: " + Integer.toString(missed.get(i)) + " times";
+            final String first = ranks.get(i).name;
+            String next = "Missed: " + Integer.toString(ranks.get(i).score) + " times";
             tvw1.setText(first);
             tvw2.setText(next);
             //final String tv = (String) tvw1.getText();
             Button bt9 = (Button)view.findViewById(R.id.button9);
+            bt9.setVisibility(View.GONE);
+            /*
             bt9.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -165,6 +174,7 @@ public class StatsActivity extends AppCompatActivity {
                     startActivity(i);
                 }
             });
+            */
             return view;
         }
     }
