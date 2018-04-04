@@ -9,8 +9,10 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -23,6 +25,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 /*
@@ -60,6 +63,8 @@ public class StatsActivity extends AppCompatActivity {
         names= DATABASEFINAL.answers.toArray(new String[0]);
         facePics= DATABASEFINAL.faces.toArray(new String[0]);
         missed= DATABASEFINAL.missed;
+        Log.e("missd", Arrays.toString(names));
+        ranks = new ArrayList<>();
         for (int i = 0; i < names.length; i++)
         {
             ranks.add(new FaceItem(names[i],facePics[i],i,missed.get(i)));
@@ -159,6 +164,7 @@ public class StatsActivity extends AppCompatActivity {
 
             final String first = ranks.get(i).name;
             String next = "Missed: " + Integer.toString(ranks.get(i).score) + " times";
+            tvw2.setTextColor(Color.RED);
             tvw1.setText(first);
             tvw2.setText(next);
             //final String tv = (String) tvw1.getText();

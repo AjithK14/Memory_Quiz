@@ -159,6 +159,7 @@ public class GameActivity extends AppCompatActivity {
         else
         {
             wrong++;
+            DATABASEFINAL.missed.set(THERIGHTINDEX,DATABASEFINAL.missed.get(THERIGHTINDEX)+1);
             faceImg.setImageResource(R.drawable.wrong);
             flashRightWrong();
 
@@ -179,6 +180,7 @@ public class GameActivity extends AppCompatActivity {
         {
             wrong++;
             faceImg.setImageResource(R.drawable.wrong);
+            DATABASEFINAL.missed.set(THERIGHTINDEX,DATABASEFINAL.missed.get(THERIGHTINDEX)+1);
             flashRightWrong();
 
         }
@@ -199,6 +201,7 @@ public class GameActivity extends AppCompatActivity {
         {
             wrong++;
             faceImg.setImageResource(R.drawable.wrong);
+            DATABASEFINAL.missed.set(THERIGHTINDEX,DATABASEFINAL.missed.get(THERIGHTINDEX)+1);
             flashRightWrong();
 
         }
@@ -218,6 +221,7 @@ public class GameActivity extends AppCompatActivity {
         {
             wrong++;
             faceImg.setImageResource(R.drawable.wrong);
+            DATABASEFINAL.missed.set(THERIGHTINDEX,DATABASEFINAL.missed.get(THERIGHTINDEX)+1);
             flashRightWrong();
 
         }

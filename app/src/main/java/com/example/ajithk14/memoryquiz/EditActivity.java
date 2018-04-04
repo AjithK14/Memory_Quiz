@@ -5,6 +5,7 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -139,6 +140,7 @@ public class EditActivity extends AppCompatActivity {
             final String first = names[i];
             String next = "Score: " + Integer.toString(scores.get(i));
             tvw1.setText(first);
+            tvw2.setTextColor(Color.rgb(63,124,64));
             tvw2.setText(next);
             //final String tv = (String) tvw1.getText();
             Button bt9 = (Button)view.findViewById(R.id.button9);
