@@ -110,6 +110,7 @@ public class AddImage extends AppCompatActivity {
                             // if this button is clicked, close
                             // current activity
                             DATABASEFINAL.answers.add(et.getText().toString());
+                            DATABASEFINAL.missed.add(0);
                             DATABASEFINAL.done(getApplicationContext());
                             Log.d("stuff", Arrays.toString(DATABASEFINAL.answers.toArray()));
                             Log.d("stuff", Arrays.toString(DATABASEFINAL.faces.toArray()));

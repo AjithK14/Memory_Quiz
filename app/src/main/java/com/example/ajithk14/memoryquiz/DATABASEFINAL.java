@@ -30,7 +30,7 @@ public class DATABASEFINAL {
     static ArrayList<String> faces = new ArrayList<String>();
     static ArrayList<String> answers = new ArrayList<String>();
     static ArrayList<Integer> scores = new ArrayList<>();
-
+    static ArrayList<Integer> missed = new ArrayList<>();
     /*
 
     MOST IMPORTANT FILE
@@ -106,6 +106,26 @@ public class DATABASEFINAL {
         catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
         }
+        try {
+            File direct = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
+            if (!direct.exists())
+            {
+                direct.mkdirs();
+            }
+            File file = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo","peopleMissed.txt");
+
+            FileOutputStream output = new FileOutputStream(file, false);
+
+            //OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("facesNames.txt", Context.MODE_PRIVATE));
+            for (int x: missed) {
+                //Log.d("face",x);
+                output.write((Integer.toString(x) + '\n').getBytes());
+            }
+            //outputStreamWriter.close();
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
     }
     public static void readFromFile(Context context) {
 
@@ -113,6 +133,7 @@ public class DATABASEFINAL {
         faces = new ArrayList<>();
         answers = new ArrayList<>();
         scores = new ArrayList<>();
+        missed = new ArrayList<>();
         try {
             File direct = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
             if (!direct.exists())
@@ -179,6 +200,28 @@ public class DATABASEFINAL {
             }
             reader3.close();
             inputStream3.close();
+
+            File direct4 = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
+            if (!direct4.exists())
+            {
+                direct4.mkdirs();
+            }
+            File file4 = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo","peopleMissed.txt");
+
+            FileInputStream inputStream4 = new FileInputStream(file4);
+
+            BufferedReader reader4 = new BufferedReader(new InputStreamReader(inputStream4));
+
+            //System.out.println("Reading File line by line using BufferedReader");
+
+            String line4 = reader4.readLine();
+            while(line4 != null){
+                missed.add(Integer.parseInt(line4.replace("\n","")));
+                Log.d("reading..", line4);
+                line4 = reader4.readLine();
+            }
+            reader4.close();
+            inputStream4.close();
         }
         catch (FileNotFoundException e) {
             Log.e("login activity", "File not found: " + e.toString());

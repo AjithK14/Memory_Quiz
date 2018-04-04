@@ -48,6 +48,7 @@ public class StatsActivity extends AppCompatActivity {
     ListView lst;
     private String[] names;
     private String[] facePics;
+    Bitmap b2;
     private ArrayList<Integer> missed;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,7 @@ public class StatsActivity extends AppCompatActivity {
         DATABASEFINAL.readFromFile(getApplicationContext());
         names= DATABASEFINAL.answers.toArray(new String[0]);
         facePics= DATABASEFINAL.faces.toArray(new String[0]);
-        missed= DATABASEFINAL.;
+        missed= DATABASEFINAL.missed;
         lst = (ListView)findViewById(R.id.listview);
         StatsActivity.CustomAdapter cust = new StatsActivity.CustomAdapter();
         lst.setAdapter(cust);
@@ -150,7 +151,7 @@ public class StatsActivity extends AppCompatActivity {
 
 
             final String first = names[i];
-            String next = "Score: " + Integer.toString(scores.get(i));
+            String next = "Missed: " + Integer.toString(missed.get(i)) + " times";
             tvw1.setText(first);
             tvw2.setText(next);
             //final String tv = (String) tvw1.getText();
@@ -158,7 +159,7 @@ public class StatsActivity extends AppCompatActivity {
             bt9.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent i = new Intent(S.this, RenameDelete.class);
+                    Intent i = new Intent(StatsActivity.this, RenameDelete.class);
                     i.putExtra("personName",first.replace("\n",""));
                     i.putExtra("picName", pickName);
                     startActivity(i);
