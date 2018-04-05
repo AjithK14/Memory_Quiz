@@ -29,6 +29,7 @@ public class DATABASEFINAL {
 
     static ArrayList<String> faces = new ArrayList<String>();
     static ArrayList<String> answers = new ArrayList<String>();
+    static ArrayList<String> favoriteColor = new ArrayList<String>();
     static ArrayList<Integer> scores = new ArrayList<>();
 
     /*
@@ -66,6 +67,12 @@ public class DATABASEFINAL {
         catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
         }
+
+
+
+
+
+
         try {
             File direct = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
             if (!direct.exists())
@@ -86,6 +93,12 @@ public class DATABASEFINAL {
         catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
         }
+
+
+
+
+
+
         try {
             File direct = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
             if (!direct.exists())
@@ -106,6 +119,35 @@ public class DATABASEFINAL {
         catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
         }
+
+
+
+
+
+        try {
+            File direct = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
+            if (!direct.exists())
+            {
+                direct.mkdirs();
+            }
+            File file = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo","favoriteColors.txt");
+
+            FileOutputStream output = new FileOutputStream(file, false);
+
+            //OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("facesNames.txt", Context.MODE_PRIVATE));
+            for (String x: favoriteColor) {
+                //Log.d("face",x);
+                output.write((x + '\n').getBytes());
+            }
+            //outputStreamWriter.close();
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+
+
+
+
     }
     public static void readFromFile(Context context) {
 
@@ -136,6 +178,12 @@ public class DATABASEFINAL {
             reader.close();
             inputStream.close();
 
+
+
+
+
+
+
             File direct2 = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
             if (!direct2.exists())
             {
@@ -158,6 +206,14 @@ public class DATABASEFINAL {
             reader2.close();
             inputStream2.close();
 
+
+
+
+
+
+
+
+
             File direct3 = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
             if (!direct3.exists())
             {
@@ -179,6 +235,32 @@ public class DATABASEFINAL {
             }
             reader3.close();
             inputStream3.close();
+
+
+
+
+
+            File direct4 = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
+            if (!direct4.exists())
+            {
+                direct4.mkdirs();
+            }
+            File file4 = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo","favoriteColors.txt");
+
+            FileInputStream inputStream4 = new FileInputStream(file4);
+
+            BufferedReader reader4 = new BufferedReader(new InputStreamReader(inputStream4));
+
+            //System.out.println("Reading File line by line using BufferedReader");
+
+            String line4 = reader.readLine();
+            while(line4 != null){
+                favoriteColor.add(line4);
+                Log.d("reading..", line4);
+                line4 = reader4.readLine();
+            }
+            reader4.close();
+            inputStream4.close();
         }
         catch (FileNotFoundException e) {
             Log.e("login activity", "File not found: " + e.toString());

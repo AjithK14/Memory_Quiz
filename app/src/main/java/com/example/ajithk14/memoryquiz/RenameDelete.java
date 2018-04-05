@@ -20,7 +20,7 @@ import java.io.FileNotFoundException;
 
 public class RenameDelete extends AppCompatActivity {
 
-    EditText myName;
+    EditText myName, myFavoriteColor;
     Button delete;
     ImageView person;
     String filename;
@@ -31,6 +31,7 @@ public class RenameDelete extends AppCompatActivity {
         Intent receivedIntent = getIntent();
         delete = (Button) findViewById(R.id.button10);
         myName = (EditText) findViewById(R.id.editText3);
+        myFavoriteColor = (EditText) findViewById(R.id.colorField);
         String select = receivedIntent.getStringExtra("personName");
         String name = receivedIntent.getStringExtra("picName");
         filename=name;
@@ -47,7 +48,9 @@ public class RenameDelete extends AppCompatActivity {
         person.setImageBitmap(b);
         myName.setText(select);
 
-
+        DATABASEFINAL.readFromFile(getApplicationContext());
+        int tempo = DATABASEFINAL.faces.indexOf(filename);
+        myFavoriteColor.setText(DATABASEFINAL.favoriteColor.get(tempo));
     }
     public void delete(View v)
     {
@@ -90,6 +93,7 @@ public class RenameDelete extends AppCompatActivity {
         DATABASEFINAL.readFromFile(getApplicationContext());
         int tempo = DATABASEFINAL.faces.indexOf(filename);
         DATABASEFINAL.answers.set(tempo,myName.getText().toString());
+        DATABASEFINAL.favoriteColor.set(tempo,myFavoriteColor.getText().toString());
         DATABASEFINAL.done(getApplicationContext());
         startActivity(new Intent(getApplicationContext(),StartScreen.class));
     }

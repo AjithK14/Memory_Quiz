@@ -95,11 +95,12 @@ public class AddImage extends AppCompatActivity {
             }
             DATABASEFINAL.faces.add(name);
             DATABASEFINAL.scores.add(0);
+            DATABASEFINAL.favoriteColor.add("");
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                     AddImage.this);
 
             // set title
-            alertDialogBuilder.setTitle("DONE");
+            alertDialogBuilder.setTitle("Done!");
 
             // set dialog message
             alertDialogBuilder
@@ -109,7 +110,17 @@ public class AddImage extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int id) {
                             // if this button is clicked, close
                             // current activity
+
+
+
+
+                            //Set 'answers' to face name and all other fields to ""
                             DATABASEFINAL.answers.add(et.getText().toString());
+
+
+
+
+
                             DATABASEFINAL.done(getApplicationContext());
                             Log.d("stuff", Arrays.toString(DATABASEFINAL.answers.toArray()));
                             Log.d("stuff", Arrays.toString(DATABASEFINAL.faces.toArray()));
