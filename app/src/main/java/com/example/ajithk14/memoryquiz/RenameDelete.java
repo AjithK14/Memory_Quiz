@@ -46,6 +46,8 @@ public class RenameDelete extends AppCompatActivity {
         }
         person.setImageBitmap(b);
         myName.setText(select);
+
+
     }
     public void delete(View v)
     {
@@ -78,6 +80,10 @@ public class RenameDelete extends AppCompatActivity {
         dialog.show();*/
 
 
+    }
+    public void onCancel(View view)
+    {
+        startActivity(new Intent(getApplicationContext(),StartScreen.class));
     }
     public void onDone(View view)
     {
