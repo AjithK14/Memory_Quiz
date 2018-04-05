@@ -38,8 +38,8 @@
 
         <Button
             android:id="@+id/optionA"
-            android:layout_width="250dp"
-            android:layout_height="60dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
@@ -56,8 +56,8 @@
 
         <Button
             android:id="@+id/optionB"
-            android:layout_width="250dp"
-            android:layout_height="60dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
@@ -75,8 +75,8 @@
 
         <Button
             android:id="@+id/optionC"
-            android:layout_width="250dp"
-            android:layout_height="60dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
@@ -94,8 +94,8 @@
 
         <Button
             android:id="@+id/optionD"
-            android:layout_width="250dp"
-            android:layout_height="60dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"

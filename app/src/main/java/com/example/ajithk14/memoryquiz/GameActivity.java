@@ -103,6 +103,13 @@ public class GameActivity extends AppCompatActivity {
         DATABASEFINAL.done(getApplicationContext());
         Log.d("out", "WE OUT");
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        DATABASEFINAL.done(getApplicationContext());
+    }
+
     public void showRightDialog()
     {
         Log.e("answers", (TextUtils.join(", ",DATABASEFINAL.answers)));
@@ -315,6 +322,7 @@ public class GameActivity extends AppCompatActivity {
     {
         Log.d("right",""+correct);
         Log.d("missed",""+wrong);
+        DATABASEFINAL.done(getApplicationContext());
         Intent myIntent = new Intent(GameActivity.this, GameComplete.class);
         myIntent.putExtra("right", correct);
         myIntent.putExtra("wrong",wrong);
