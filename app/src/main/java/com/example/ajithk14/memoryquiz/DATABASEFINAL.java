@@ -31,6 +31,10 @@ public class DATABASEFINAL {
     static ArrayList<String> answers = new ArrayList<String>();
     static ArrayList<Integer> scores = new ArrayList<>();
     static ArrayList<Integer> missed = new ArrayList<>();
+    String[] columns = {"facesNames.txt","actualNames.txt","actualScores.txt","peopleMissed.txt"};
+    static ArrayList<ArrayList<Object>> arrays = new ArrayList<>();
+
+
     /*
 
     MOST IMPORTANT FILE
