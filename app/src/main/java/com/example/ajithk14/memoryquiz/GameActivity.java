@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -50,6 +51,7 @@ public class GameActivity extends AppCompatActivity {
 
     Button A, B, C, D;
     ImageView faceImg;
+    TextView quesField;
     List<FaceItem> list = new ArrayList<>();
     Random r;
     int correct_answer;
@@ -73,9 +75,11 @@ public class GameActivity extends AppCompatActivity {
 
         //EACH OPTION
         A = (Button)findViewById(R.id.optionA);
-        B= (Button)findViewById(R.id.optionB);
+        B = (Button)findViewById(R.id.optionB);
         C = (Button)findViewById(R.id.optionC);
         D = (Button)findViewById(R.id.optionD);
+
+        quesField = (TextView) findViewById((R.id.questionField));
 
         arr = new Button[]{A,B,C,D};
 
@@ -85,10 +89,12 @@ public class GameActivity extends AppCompatActivity {
             //Log.d("apparently this is zero", "FE");
 
         DATABASEFINAL.readFromFile(getApplicationContext());}
+        Log.d("Fav Color List",DATABASEFINAL.favoriteColor.toString());
 
         for (int i = 0; i < DATABASEFINAL.answers.size(); i++)
         {
-            list.add(new FaceItem(DATABASEFINAL.answers.get(i),DATABASEFINAL.faces.get(i),i));
+            list.add(new FaceItem("What is his/her name?",DATABASEFINAL.answers.get(i), DATABASEFINAL.faces.get(i), i));
+            list.add(new FaceItem("What is his/her favorite color?",DATABASEFINAL.favoriteColor.get(i), DATABASEFINAL.faces.get(i), i));
         }
 
         //FOR NOW WE ARE SHUFFLING BUT LATER WE NEED TO ASK THE MOST MISSED MORE OFTEN
@@ -111,13 +117,13 @@ public class GameActivity extends AppCompatActivity {
                 GameActivity.this);
 
         // set title
-        alertDialogBuilder.setTitle("CORRECT!");
+        alertDialogBuilder.setTitle("Correct!");
 
         // set dialog message
         alertDialogBuilder
-                .setMessage("You are right!")
+                .setMessage("Nice job!")
                 .setCancelable(false)
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Next", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                         if (turn < 10)
@@ -249,13 +255,13 @@ public class GameActivity extends AppCompatActivity {
                         GameActivity.this);
 
                 // set title
-                alertDialogBuilder.setTitle("WRONG!");
+                alertDialogBuilder.setTitle("Not quite...");
                 Log.d("suh",""+turn);
                 // set dialog message
                 alertDialogBuilder
-                        .setMessage("The correct answer is actually "+arr[correct_answer].getText())
+                        .setMessage("The correct answer is "+arr[correct_answer].getText())
                         .setCancelable(false)
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("Next", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.dismiss();
                                 arr[correct_answer].setBackgroundColor(tempB);
@@ -333,15 +339,29 @@ public class GameActivity extends AppCompatActivity {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        ArrayList<Integer> poses = new ArrayList<>(4);
+        poses.add(num);
+
         faceImg.setImageBitmap(b);
+        quesField.setText(list.get(num).questionText);
         correct_answer = r.nextInt(4);
-        arr[correct_answer].setText(list.get(num).name);
+        arr[correct_answer].setText(list.get(num).answer);
         for (int i = 1; i < 4; i++)
         {
-            arr[(correct_answer+i)%4].setText(list.get((num+i)%list.size()).name);
+            int pos = (int)((double)(Math.random()*list.size()));
+
+
+            /* NOTE: change list.size()/x so that x = the number of answer options (name, fav color, etc.....) */
+
+            if(list.get(pos).questionText.equals(list.get(num).questionText) && (!poses.contains(pos) || poses.size()>=list.size()/2)) {
+                arr[(correct_answer + i) % 4].setText(list.get(pos).answer);
+                poses.add(pos);
+            }
+            else
+                i--;
         }
-        Log.d("right answer", list.get(num).name);
-        THERIGHTANSWER=list.get(num).name;
+        Log.d("right answer", list.get(num).answer);
+        THERIGHTANSWER=list.get(num).answer;
         THERIGHTINDEX = list.get(num).index;
     }
 }

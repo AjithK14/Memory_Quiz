@@ -155,6 +155,7 @@ public class DATABASEFINAL {
         faces = new ArrayList<>();
         answers = new ArrayList<>();
         scores = new ArrayList<>();
+        favoriteColor = new ArrayList<>();
         try {
             File direct = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
             if (!direct.exists())
@@ -253,7 +254,7 @@ public class DATABASEFINAL {
 
             //System.out.println("Reading File line by line using BufferedReader");
 
-            String line4 = reader.readLine();
+            String line4 = reader4.readLine();
             while(line4 != null){
                 favoriteColor.add(line4);
                 Log.d("reading..", line4);

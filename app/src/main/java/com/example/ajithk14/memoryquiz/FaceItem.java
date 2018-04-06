@@ -5,12 +5,14 @@ package com.example.ajithk14.memoryquiz;
  */
 
 public class FaceItem {
-    String name;
+    String questionText;
+    String answer;
     String image;
     int index;
-    public FaceItem(String name1, String image1, int ind)
+    public FaceItem(String questionText1, String answer1, String image1, int ind)
     {
-        name=name1;
+        questionText=questionText1;
+        answer=answer1;
         image=image1;
         index = ind;
     }

@@ -112,6 +112,7 @@ public class RenameDelete extends AppCompatActivity {
                         DATABASEFINAL.answers.remove(tempo);
                         DATABASEFINAL.scores.remove(tempo);
                         DATABASEFINAL.faces.remove(tempo);
+                        DATABASEFINAL.favoriteColor.remove(tempo);
                         DATABASEFINAL.done(getApplicationContext());
                         startActivity(new Intent(getApplicationContext(),StartScreen.class));
                     }
