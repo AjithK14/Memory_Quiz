@@ -31,6 +31,7 @@ public class DATABASEFINAL {
     static ArrayList<String> answers = new ArrayList<String>();
     static ArrayList<Integer> scores = new ArrayList<>();
     static ArrayList<Integer> missed = new ArrayList<>();
+    static ArrayList<String> dates = new ArrayList<>();
     String[] columns = {"facesNames.txt","actualNames.txt","actualScores.txt","peopleMissed.txt"};
     static ArrayList<ArrayList<Object>> arrays = new ArrayList<>();
 
@@ -226,6 +227,28 @@ public class DATABASEFINAL {
             }
             reader4.close();
             inputStream4.close();
+
+            File direct5 = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
+            if (!direct5.exists())
+            {
+                direct5.mkdirs();
+            }
+            File file5 = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo","gamesPlayed.txt");
+
+            FileInputStream inputStream5 = new FileInputStream(file5);
+
+            BufferedReader reader5 = new BufferedReader(new InputStreamReader(inputStream5));
+
+            //System.out.println("Reading File line by line using BufferedReader");
+
+            String line5 = reader.readLine();
+            while(line5 != null){
+                dates.add(line5);
+                Log.d("reading..", line);
+                line5 = reader.readLine();
+            }
+            reader5.close();
+            inputStream5.close();
         }
         catch (FileNotFoundException e) {
             Log.e("login activity", "File not found: " + e.toString());

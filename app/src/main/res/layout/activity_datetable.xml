@@ -9,23 +9,27 @@
 
         <TextView
             android:padding="3dip"
-            android:text="Suhh" />
+            android:text="Suhh"
+            android:textSize="24sp" />
 
         <TextView
             android:gravity="right"
             android:padding="3dip"
-            android:text="Wassup" />
+            android:text="Wassup"
+            android:textSize="24sp" />
     </TableRow>
 
     <TableRow>
 
         <TextView
             android:padding="3dip"
-            android:text="Duhh" />
+            android:text="Duhh"
+            android:textSize="24sp" />
 
         <TextView
             android:gravity="right"
             android:padding="3dip"
-            android:text="Wuhh" />
+            android:text="Wuhh"
+            android:textSize="24sp" />
     </TableRow>
 </TableLayout>

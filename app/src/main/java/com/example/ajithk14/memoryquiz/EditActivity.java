@@ -145,6 +145,8 @@ public class EditActivity extends AppCompatActivity {
             //final String tv = (String) tvw1.getText();
             Button bt9 = (Button)view.findViewById(R.id.button9);
             bt9.setVisibility(View.VISIBLE);
+            TextView tv3 = view.findViewById(R.id.textView3);
+            tv3.setVisibility(View.GONE);
             bt9.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
