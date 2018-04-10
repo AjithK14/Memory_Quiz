@@ -161,7 +161,8 @@ public class StatsActivity extends AppCompatActivity {
             //imw.setImageBitmap(b);
 
 
-
+            TextView tv3 = view.findViewById(R.id.textView3);
+            tv3.setVisibility(View.GONE);
             final String first = ranks.get(i).name;
             String next = "Missed: " + Integer.toString(ranks.get(i).score) + " times";
             tvw2.setTextColor(Color.RED);

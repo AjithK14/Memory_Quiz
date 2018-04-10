@@ -13,6 +13,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -72,6 +73,7 @@ public class ChooseImage extends AppCompatActivity {
     ImageView imageView;
     final int CROP_PIC=2;
     CropImageView mCropImageView;
+    boolean hasImg = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +117,7 @@ public class ChooseImage extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (imageView.getDrawable()==null)
+                if (!(hasImg))
                 {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                             ChooseImage.this);
@@ -168,7 +170,16 @@ public class ChooseImage extends AppCompatActivity {
         CamIntent.putExtra("return-data",true);*/
         startActivityForResult(CamIntent,CAMERA_CAPTURE);
     }
+    private boolean hasImage(@NonNull ImageView view) {
+        Drawable drawable = view.getDrawable();
+        boolean hasImage = (drawable != null);
 
+        if (hasImage && (drawable instanceof BitmapDrawable)) {
+            hasImage = ((BitmapDrawable)drawable).getBitmap() != null;
+        }
+
+        return hasImage;
+    }
     public void showProgress()
     {
         new Thread(new Runnable() {
@@ -332,11 +343,13 @@ public class ChooseImage extends AppCompatActivity {
                 Uri dest = Uri.fromFile(new File(getCacheDir(),"cropped"));
                 Crop.of(src_uri,dest).asSquare().start(this);
                 imageView.setImageURI(Crop.getOutput(data));
+                hasImg=true;
             }
             else if (requestCode==82)
             {
                 THEbitmap = getBitmapFromData(data);
                 imageView.setImageBitmap(THEbitmap);
+                hasImg=true;
 
             }
             else if (requestCode == CAMERA_CAPTURE) {
@@ -367,6 +380,7 @@ public class ChooseImage extends AppCompatActivity {
 
                 THEbitmap = extras.getParcelable("data");
                 imageView.setImageBitmap(THEbitmap);
+                hasImg = true;
             }
         }
     }
@@ -392,6 +406,7 @@ public class ChooseImage extends AppCompatActivity {
         if (code==RESULT_OK)
         {
             imageView.setImageURI(Crop.getOutput(result));
+            hasImg=true;
             THEbitmap=((BitmapDrawable)imageView.getDrawable()).getBitmap();
         }
         else if (code==Crop.RESULT_ERROR)
