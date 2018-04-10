@@ -31,7 +31,7 @@ public class DATABASEFINAL {
     static ArrayList<String> answers = new ArrayList<String>();
     static ArrayList<String> favoriteColor = new ArrayList<String>();
     static ArrayList<Integer> scores = new ArrayList<>();
-
+    static ArrayList<Integer> missed = new ArrayList<>();
     /*
 
     MOST IMPORTANT FILE
@@ -144,6 +144,26 @@ public class DATABASEFINAL {
         catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
         }
+        try {
+            File direct = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
+            if (!direct.exists())
+            {
+                direct.mkdirs();
+            }
+            File file = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo","peopleMissed.txt");
+
+            FileOutputStream output = new FileOutputStream(file, false);
+
+            //OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("facesNames.txt", Context.MODE_PRIVATE));
+            for (int x: missed) {
+                //Log.d("face",x);
+                output.write((Integer.toString(x) + '\n').getBytes());
+            }
+            //outputStreamWriter.close();
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
 
 
 
@@ -241,6 +261,8 @@ public class DATABASEFINAL {
 
 
 
+
+
             File direct4 = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
             if (!direct4.exists())
             {
@@ -262,6 +284,23 @@ public class DATABASEFINAL {
             }
             reader4.close();
             inputStream4.close();
+
+            File file5 = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo","peopleMissed.txt");
+
+            FileInputStream inputStream5 = new FileInputStream(file5);
+
+            BufferedReader reader5 = new BufferedReader(new InputStreamReader(inputStream5));
+
+            //System.out.println("Reading File line by line using BufferedReader");
+
+            String line5 = reader5.readLine();
+            while(line5 != null){
+                missed.add(Integer.parseInt(line5.replace("\n","")));
+                Log.d("reading..", line5);
+                line5 = reader5.readLine();
+            }
+            reader5.close();
+            inputStream5.close();
         }
         catch (FileNotFoundException e) {
             Log.e("login activity", "File not found: " + e.toString());
