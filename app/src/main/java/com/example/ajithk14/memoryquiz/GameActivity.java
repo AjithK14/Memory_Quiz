@@ -95,6 +95,7 @@ public class GameActivity extends AppCompatActivity {
         {
             list.add(new FaceItem("What is his/her name?",DATABASEFINAL.answers.get(i), DATABASEFINAL.faces.get(i), i));
             list.add(new FaceItem("What is his/her favorite color?",DATABASEFINAL.favoriteColor.get(i), DATABASEFINAL.faces.get(i), i));
+            list.add(new FaceItem("What is his/her favorite food?",DATABASEFINAL.favoriteFood.get(i), DATABASEFINAL.faces.get(i), i));
         }
 
         //FOR NOW WE ARE SHUFFLING BUT LATER WE NEED TO ASK THE MOST MISSED MORE OFTEN

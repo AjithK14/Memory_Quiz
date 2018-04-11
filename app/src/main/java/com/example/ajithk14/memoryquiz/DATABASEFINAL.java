@@ -30,6 +30,7 @@ public class DATABASEFINAL {
     static ArrayList<String> faces = new ArrayList<String>();
     static ArrayList<String> answers = new ArrayList<String>();
     static ArrayList<String> favoriteColor = new ArrayList<String>();
+    static ArrayList<String> favoriteFood = new ArrayList<String>();
     static ArrayList<Integer> scores = new ArrayList<>();
 
     /*
@@ -148,6 +149,31 @@ public class DATABASEFINAL {
 
 
 
+
+        try {
+            File direct = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
+            if (!direct.exists())
+            {
+                direct.mkdirs();
+            }
+            File file = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo","favoriteFoods.txt");
+
+            FileOutputStream output = new FileOutputStream(file, false);
+
+            //OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("facesNames.txt", Context.MODE_PRIVATE));
+            for (String x: favoriteFood) {
+                //Log.d("face",x);
+                output.write((x + '\n').getBytes());
+            }
+            //outputStreamWriter.close();
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+
+
+
+
     }
     public static void readFromFile(Context context) {
 
@@ -156,6 +182,7 @@ public class DATABASEFINAL {
         answers = new ArrayList<>();
         scores = new ArrayList<>();
         favoriteColor = new ArrayList<>();
+        favoriteFood = new ArrayList<>();
         try {
             File direct = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
             if (!direct.exists())
@@ -259,6 +286,32 @@ public class DATABASEFINAL {
                 favoriteColor.add(line4);
                 Log.d("reading..", line4);
                 line4 = reader4.readLine();
+            }
+            reader4.close();
+            inputStream4.close();
+
+
+
+
+
+            File direct5 = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
+            if (!direct5.exists())
+            {
+                direct5.mkdirs();
+            }
+            File file5 = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo","favoriteFoods.txt");
+
+            FileInputStream inputStream5 = new FileInputStream(file5);
+
+            BufferedReader reader5 = new BufferedReader(new InputStreamReader(inputStream5));
+
+            //System.out.println("Reading File line by line using BufferedReader");
+
+            String line5 = reader5.readLine();
+            while(line5 != null){
+                favoriteFood.add(line5);
+                Log.d("reading..", line5);
+                line5 = reader5.readLine();
             }
             reader4.close();
             inputStream4.close();

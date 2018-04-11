@@ -20,7 +20,7 @@ import java.io.FileNotFoundException;
 
 public class RenameDelete extends AppCompatActivity {
 
-    EditText myName, myFavoriteColor;
+    EditText myName, myFavoriteColor, myFavoriteFood;
     Button delete;
     ImageView person;
     String filename;
@@ -32,6 +32,7 @@ public class RenameDelete extends AppCompatActivity {
         delete = (Button) findViewById(R.id.button10);
         myName = (EditText) findViewById(R.id.editText3);
         myFavoriteColor = (EditText) findViewById(R.id.colorField);
+        myFavoriteFood = (EditText) findViewById(R.id.foodField);
         String select = receivedIntent.getStringExtra("personName");
         String name = receivedIntent.getStringExtra("picName");
         filename=name;
@@ -51,6 +52,7 @@ public class RenameDelete extends AppCompatActivity {
         DATABASEFINAL.readFromFile(getApplicationContext());
         int tempo = DATABASEFINAL.faces.indexOf(filename);
         myFavoriteColor.setText(DATABASEFINAL.favoriteColor.get(tempo));
+        myFavoriteFood.setText(DATABASEFINAL.favoriteFood.get(tempo));
     }
     public void delete(View v)
     {
@@ -94,6 +96,7 @@ public class RenameDelete extends AppCompatActivity {
         int tempo = DATABASEFINAL.faces.indexOf(filename);
         DATABASEFINAL.answers.set(tempo,myName.getText().toString());
         DATABASEFINAL.favoriteColor.set(tempo,myFavoriteColor.getText().toString());
+        DATABASEFINAL.favoriteFood.set(tempo,myFavoriteFood.getText().toString());
         DATABASEFINAL.done(getApplicationContext());
         startActivity(new Intent(getApplicationContext(),StartScreen.class));
     }
@@ -113,6 +116,7 @@ public class RenameDelete extends AppCompatActivity {
                         DATABASEFINAL.scores.remove(tempo);
                         DATABASEFINAL.faces.remove(tempo);
                         DATABASEFINAL.favoriteColor.remove(tempo);
+                        DATABASEFINAL.favoriteFood.remove(tempo);
                         DATABASEFINAL.done(getApplicationContext());
                         startActivity(new Intent(getApplicationContext(),StartScreen.class));
                     }
