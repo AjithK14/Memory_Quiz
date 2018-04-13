@@ -32,7 +32,7 @@ public class DATABASEFINAL {
     static ArrayList<String> favoriteColor = new ArrayList<String>();
     static ArrayList<String> favoriteFood = new ArrayList<String>();
     static ArrayList<Integer> scores = new ArrayList<>();
-
+    static ArrayList<Integer> missed = new ArrayList<>();
     /*
 
     MOST IMPORTANT FILE
@@ -145,6 +145,26 @@ public class DATABASEFINAL {
         catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
         }
+        try {
+            File direct = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
+            if (!direct.exists())
+            {
+                direct.mkdirs();
+            }
+            File file = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo","peopleMissed.txt");
+
+            FileOutputStream output = new FileOutputStream(file, false);
+
+            //OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("facesNames.txt", Context.MODE_PRIVATE));
+            for (int x: missed) {
+                //Log.d("face",x);
+                output.write((Integer.toString(x) + '\n').getBytes());
+            }
+            //outputStreamWriter.close();
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
 
 
 
@@ -183,6 +203,7 @@ public class DATABASEFINAL {
         scores = new ArrayList<>();
         favoriteColor = new ArrayList<>();
         favoriteFood = new ArrayList<>();
+        missed = new ArrayList<>();
         try {
             File direct = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
             if (!direct.exists())
@@ -268,6 +289,8 @@ public class DATABASEFINAL {
 
 
 
+
+
             File direct4 = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
             if (!direct4.exists())
             {
@@ -290,16 +313,7 @@ public class DATABASEFINAL {
             reader4.close();
             inputStream4.close();
 
-
-
-
-
-            File direct5 = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
-            if (!direct5.exists())
-            {
-                direct5.mkdirs();
-            }
-            File file5 = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo","favoriteFoods.txt");
+            File file5 = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo","peopleMissed.txt");
 
             FileInputStream inputStream5 = new FileInputStream(file5);
 
@@ -309,12 +323,38 @@ public class DATABASEFINAL {
 
             String line5 = reader5.readLine();
             while(line5 != null){
-                favoriteFood.add(line5);
+                missed.add(Integer.parseInt(line5.replace("\n","")));
                 Log.d("reading..", line5);
                 line5 = reader5.readLine();
             }
-            reader4.close();
-            inputStream4.close();
+            reader5.close();
+            inputStream5.close();
+
+
+
+
+
+            File direct6 = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
+            if (!direct6.exists())
+            {
+                direct6.mkdirs();
+            }
+            File file6 = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo","favoriteFoods.txt");
+
+            FileInputStream inputStream6 = new FileInputStream(file6);
+
+            BufferedReader reader6 = new BufferedReader(new InputStreamReader(inputStream6));
+
+            //System.out.println("Reading File line by line using BufferedReader");
+
+            String line6 = reader6.readLine();
+            while(line6 != null){
+                favoriteFood.add(line6);
+                Log.d("reading..", line6);
+                line6 = reader5.readLine();
+            }
+            reader6.close();
+            inputStream6.close();
         }
         catch (FileNotFoundException e) {
             Log.e("login activity", "File not found: " + e.toString());
