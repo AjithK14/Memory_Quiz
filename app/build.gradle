@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     buildToolsVersion "27.0.2"
     defaultConfig {
         applicationId "com.example.ajithk14.memoryquiz"
         minSdkVersion 23
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -31,7 +31,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.jjoe64:graphview:4.2.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:design:26.+'
+    compile 'com.android.support:design:27.+'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
     compile 'de.codecrafters.tableview:tableview:2.2.0'
     testCompile 'junit:junit:4.12'

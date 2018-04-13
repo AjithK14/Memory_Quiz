@@ -53,7 +53,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                android:background="@android:color/holo_blue_dark"
+                android:background="@color/colorPrimary"
                 android:onClick="onClickB"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
