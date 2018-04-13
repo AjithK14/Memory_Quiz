@@ -29,8 +29,10 @@ dependencies {
     })
     //noinspection GradleCompatible
     compile 'com.android.support:appcompat-v7:26.+'
+    compile 'com.jjoe64:graphview:4.2.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:26.+'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
+    compile 'de.codecrafters.tableview:tableview:2.2.0'
     testCompile 'junit:junit:4.12'
 }

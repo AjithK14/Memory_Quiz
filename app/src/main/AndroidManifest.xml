@@ -63,7 +63,10 @@
         <!-- optional (needed if default theme has no action bar) -->
         <activity android:name=".GameComplete" />
         <activity android:name=".RenameDelete" />
-        <activity android:name=".StatsActivity"></activity>
+        <activity android:name=".StatsActivity" />
+        <activity android:name=".DateTableActivity" />
+        <activity android:name=".ButtonStatsActivity" />
+        <activity android:name=".GraphActivity"></activity>
     </application>
 
 </manifest>

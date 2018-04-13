@@ -10,6 +10,8 @@ import android.view.*;
 import android.widget.*;
 import android.content.*;
 
+import java.util.Date;
+
 public class StartScreen extends AppCompatActivity{
     ConstraintLayout myLayout;
     AnimationDrawable myDraw;
@@ -96,7 +98,7 @@ public class StartScreen extends AppCompatActivity{
     }
     public void onClickStats(View v)
     {
-        startActivity(new Intent(getApplicationContext(),StatsActivity.class));
+       startActivity(new Intent(getApplicationContext(),ButtonStatsActivity.class));
     }
     public void onClickPlay(View v)
     {

@@ -1,5 +1,6 @@
 package com.example.ajithk14.memoryquiz;
 
+import android.app.IntentService;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.support.constraint.ConstraintLayout;
@@ -7,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class GameComplete extends AppCompatActivity {
     ConstraintLayout myLayout;
@@ -29,6 +33,9 @@ public class GameComplete extends AppCompatActivity {
         wrongans = (TextView)findViewById(R.id.textView9);
         rightans.setText("Right: "+right);
         wrongans.setText("Wrong: "+wrong);
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String input = timeStamp.substring(4,6)+"/"+timeStamp.substring(6,8)+"/"+timeStamp.substring(0,4);
+        DATABASEFINAL.dates.add(input + " " + Integer.toString(right));
         DATABASEFINAL.done(getApplicationContext());
     }
     public void Done(View v)
