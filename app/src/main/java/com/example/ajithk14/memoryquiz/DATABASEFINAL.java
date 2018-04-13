@@ -33,6 +33,7 @@ public class DATABASEFINAL {
     static ArrayList<String> favoriteFood = new ArrayList<String>();
     static ArrayList<Integer> scores = new ArrayList<>();
     static ArrayList<Integer> missed = new ArrayList<>();
+    static ArrayList<String> dates = new ArrayList<>();
     /*
 
     MOST IMPORTANT FILE
@@ -70,7 +71,26 @@ public class DATABASEFINAL {
         }
 
 
+        try {
+            File direct = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
+            if (!direct.exists())
+            {
+                direct.mkdirs();
+            }
+            File file = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo","dates.txt");
 
+            FileOutputStream output = new FileOutputStream(file, false);
+
+            //OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("facesNames.txt", Context.MODE_PRIVATE));
+            for (String x: dates) {
+                Log.d("face",x);
+                output.write((x + '\n').getBytes());
+            }
+            //outputStreamWriter.close();
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
 
 
 
@@ -204,6 +224,7 @@ public class DATABASEFINAL {
         favoriteColor = new ArrayList<>();
         favoriteFood = new ArrayList<>();
         missed = new ArrayList<>();
+        dates = new ArrayList<>();
         try {
             File direct = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
             if (!direct.exists())
@@ -351,10 +372,32 @@ public class DATABASEFINAL {
             while(line6 != null){
                 favoriteFood.add(line6);
                 Log.d("reading..", line6);
-                line6 = reader5.readLine();
+                line6 = reader6.readLine();
             }
             reader6.close();
             inputStream6.close();
+
+            File direct7 = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
+            if (!direct7.exists())
+            {
+                direct7.mkdirs();
+            }
+            File file7 = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo","dates.txt");
+
+            FileInputStream inputStream7 = new FileInputStream(file7);
+
+            BufferedReader reader7 = new BufferedReader(new InputStreamReader(inputStream7));
+
+            //System.out.println("Reading File line by line using BufferedReader");
+
+            String line7 = reader7.readLine();
+            while(line7 != null){
+                dates.add(line7);
+                Log.d("reading..", line7);
+                line7 = reader7.readLine();
+            }
+            reader7.close();
+            inputStream7.close();
         }
         catch (FileNotFoundException e) {
             Log.e("login activity", "File not found: " + e.toString());

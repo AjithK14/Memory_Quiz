@@ -79,6 +79,7 @@ public class GameActivity extends AppCompatActivity {
         C = (Button)findViewById(R.id.optionC);
         D = (Button)findViewById(R.id.optionD);
 
+
         quesField = (TextView) findViewById((R.id.questionField));
 
         arr = new Button[]{A,B,C,D};
@@ -110,6 +111,21 @@ public class GameActivity extends AppCompatActivity {
         DATABASEFINAL.done(getApplicationContext());
         Log.d("out", "WE OUT");
     }
+    public static void shuffleArray(int[] a) {
+        int n = a.length;
+        Random random = new Random();
+        random.nextInt();
+        for (int i = 0; i < n; i++) {
+            int change = i + random.nextInt(n - i);
+            swap(a, i, change);
+        }
+    }
+    private static void swap(int[] a, int i, int change) {
+        int helper = a[i];
+        a[i] = a[change];
+        a[change] = helper;
+    }
+
     public void showRightDialog()
     {
         Log.e("answers", (TextUtils.join(", ",DATABASEFINAL.answers)));
@@ -166,6 +182,7 @@ public class GameActivity extends AppCompatActivity {
         else
         {
             wrong++;
+            DATABASEFINAL.missed.set(THERIGHTINDEX,DATABASEFINAL.missed.get(THERIGHTINDEX)+1);
             faceImg.setImageResource(R.drawable.wrong);
             flashRightWrong();
 
@@ -185,6 +202,7 @@ public class GameActivity extends AppCompatActivity {
         else
         {
             wrong++;
+            DATABASEFINAL.missed.set(THERIGHTINDEX,DATABASEFINAL.missed.get(THERIGHTINDEX)+1);
             faceImg.setImageResource(R.drawable.wrong);
             flashRightWrong();
 
@@ -205,6 +223,7 @@ public class GameActivity extends AppCompatActivity {
         else
         {
             wrong++;
+            DATABASEFINAL.missed.set(THERIGHTINDEX,DATABASEFINAL.missed.get(THERIGHTINDEX)+1);
             faceImg.setImageResource(R.drawable.wrong);
             flashRightWrong();
 
@@ -224,6 +243,7 @@ public class GameActivity extends AppCompatActivity {
         else
         {
             wrong++;
+            DATABASEFINAL.missed.set(THERIGHTINDEX,DATABASEFINAL.missed.get(THERIGHTINDEX)+1);
             faceImg.setImageResource(R.drawable.wrong);
             flashRightWrong();
 
@@ -329,40 +349,44 @@ public class GameActivity extends AppCompatActivity {
         /*
         FIND THE IMAGE IN THE DATABASE ARRAY  AND
          */
-
-        Log.d("whereweat",""+turn);
-        ContextWrapper cw = new ContextWrapper(getApplicationContext());
-        File path1 = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        File f = new File(path1, list.get((num)).image);
-        Bitmap b = null;
-        try {
-            b = BitmapFactory.decodeStream(new FileInputStream(f));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        ArrayList<Integer> poses = new ArrayList<>(4);
-        poses.add(num);
-
-        faceImg.setImageBitmap(b);
-        quesField.setText(list.get(num).questionText);
-        correct_answer = r.nextInt(4);
-        arr[correct_answer].setText(list.get(num).answer);
-        for (int i = 1; i < 4; i++)
-        {
-            int pos = (int)((double)(Math.random()*list.size()));
-
-
-            /* NOTE: change list.size()/x so that x = the number of answer options (name, fav color, etc.....) */
-
-            if(list.get(pos).questionText.equals(list.get(num).questionText) && (!poses.contains(pos) || poses.size()>=list.size()/2)) {
-                arr[(correct_answer + i) % 4].setText(list.get(pos).answer);
-                poses.add(pos);
+        if (!list.get(num).answer.equals("_")) {
+            int[] colors = {Color.parseColor("#e03c57"),Color.parseColor("#543fdb"),Color.parseColor("#ef2dec"),Color.parseColor("#e57322")};
+            shuffleArray(colors);
+            A.setBackgroundColor(colors[0]);
+            B.setBackgroundColor(colors[1]);
+            C.setBackgroundColor(colors[2]);
+            D.setBackgroundColor(colors[3]);
+            Log.d("whereweat", "0" + turn);
+            ContextWrapper cw = new ContextWrapper(getApplicationContext());
+            File path1 = cw.getDir("imageDir", Context.MODE_PRIVATE);
+            File f = new File(path1, list.get((num)).image);
+            Bitmap b = null;
+            try {
+                b = BitmapFactory.decodeStream(new FileInputStream(f));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
-            else
-                i--;
+            //ArrayList<Integer> poses = new ArrayList<>(4);
+            //poses.add(num);
+            Log.d("whereweat", "1" + turn);
+            faceImg.setImageBitmap(b);
+            quesField.setText(list.get(num).questionText);
+            correct_answer = r.nextInt(4);
+            arr[correct_answer].setText(list.get(num).answer);
+            Log.d("whereweat", "2" + turn);
+            for (int i = 1; i < 4; i++) {
+                int pos = (int) ((double) (Math.random() * list.size()));
+
+
+                /* NOTE: change list.size()/x so that x = the number of answer options (name, fav color, etc.....) */
+                arr[(correct_answer + i) % 4].setText(list.get(pos).answer);
+            }
+            Log.d("right answer", list.get(num).answer);
+            THERIGHTANSWER = list.get(num).answer;
+            THERIGHTINDEX = list.get(num).index;
         }
-        Log.d("right answer", list.get(num).answer);
-        THERIGHTANSWER=list.get(num).answer;
-        THERIGHTINDEX = list.get(num).index;
+        else{
+            newQuestion((num+1)%list.size());
+        }
     }
 }

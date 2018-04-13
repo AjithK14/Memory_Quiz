@@ -13,6 +13,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -72,6 +73,7 @@ public class ChooseImage extends AppCompatActivity {
     ImageView imageView;
     final int CROP_PIC=2;
     CropImageView mCropImageView;
+    boolean hasImg = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,21 +89,21 @@ public class ChooseImage extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.imageView);
         THEbitmap=null;
         //int permis = ContextCompat.checkSelfPermission(ChooseImage.this,
-          //      Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        //      Manifest.permission.WRITE_EXTERNAL_STORAGE);
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(ChooseImage.this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
 
-                // No explanation needed, we can request the permission.
+            // No explanation needed, we can request the permission.
 
-                ActivityCompat.requestPermissions(ChooseImage.this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        REQUEST_EXTERNAL_STORAGE);
+            ActivityCompat.requestPermissions(ChooseImage.this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_EXTERNAL_STORAGE);
 
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
+            // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+            // app-defined int constant. The callback method gets the
+            // result of the request.
 
         }
         int permissionCheck = ContextCompat.checkSelfPermission(ChooseImage.this,Manifest.permission.CAMERA);
@@ -115,7 +117,7 @@ public class ChooseImage extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (imageView.getDrawable()==null)
+                if (!(hasImg))
                 {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                             ChooseImage.this);
@@ -143,7 +145,7 @@ public class ChooseImage extends AppCompatActivity {
                     progressBar.setVisibility(View.VISIBLE);
 
                     showProgress();
-                //changeActivities();
+                    //changeActivities();
                 }
                 /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
@@ -168,7 +170,16 @@ public class ChooseImage extends AppCompatActivity {
         CamIntent.putExtra("return-data",true);*/
         startActivityForResult(CamIntent,CAMERA_CAPTURE);
     }
+    private boolean hasImage(@NonNull ImageView view) {
+        Drawable drawable = view.getDrawable();
+        boolean hasImage = (drawable != null);
 
+        if (hasImage && (drawable instanceof BitmapDrawable)) {
+            hasImage = ((BitmapDrawable)drawable).getBitmap() != null;
+        }
+
+        return hasImage;
+    }
     public void showProgress()
     {
         new Thread(new Runnable() {
@@ -260,9 +271,10 @@ public class ChooseImage extends AppCompatActivity {
         }
         */
         String[] x = saveToInternalStorage(((BitmapDrawable)imageView.getDrawable()).getBitmap());
-        Intent i = new Intent(this, AddImage.class);
+        Intent i = new Intent(this, RenameDelete.class);
         i.putExtra("smooth", x[0]);
         i.putExtra("filename", x[1]);
+        i.putExtra("editing","ADD");
         startActivity(i);
 
 
@@ -332,11 +344,13 @@ public class ChooseImage extends AppCompatActivity {
                 Uri dest = Uri.fromFile(new File(getCacheDir(),"cropped"));
                 Crop.of(src_uri,dest).asSquare().start(this);
                 imageView.setImageURI(Crop.getOutput(data));
+                hasImg=true;
             }
             else if (requestCode==82)
             {
                 THEbitmap = getBitmapFromData(data);
                 imageView.setImageBitmap(THEbitmap);
+                hasImg=true;
 
             }
             else if (requestCode == CAMERA_CAPTURE) {
@@ -348,7 +362,6 @@ public class ChooseImage extends AppCompatActivity {
                 //picUri = data.getData();
                 //Log.d("gg","WE ARE USING THE CAMERA WOOT WOOT");
                 /*
-
                 //mCropImageView.setImageURI
                 mCropImageView.setImageURI(getPickImageResultUri(data));
                 Bitmap cropped =  mCropImageView.getCroppedImage(500, 500);
@@ -367,6 +380,7 @@ public class ChooseImage extends AppCompatActivity {
 
                 THEbitmap = extras.getParcelable("data");
                 imageView.setImageBitmap(THEbitmap);
+                hasImg = true;
             }
         }
     }
@@ -392,6 +406,7 @@ public class ChooseImage extends AppCompatActivity {
         if (code==RESULT_OK)
         {
             imageView.setImageURI(Crop.getOutput(result));
+            hasImg=true;
             THEbitmap=((BitmapDrawable)imageView.getDrawable()).getBitmap();
         }
         else if (code==Crop.RESULT_ERROR)
@@ -400,29 +415,29 @@ public class ChooseImage extends AppCompatActivity {
         }
     }
 
-        /*
-        if(requestCode == 0 && resultCode == RESULT_OK)
+    /*
+    if(requestCode == 0 && resultCode == RESULT_OK)
+        CropImage();
+    else if(requestCode == 2)
+    {
+        if(data != null)
+        {
+            uri = data.getData();
             CropImage();
-        else if(requestCode == 2)
-        {
-            if(data != null)
-            {
-                uri = data.getData();
-                CropImage();
-            }
-        }
-        else if (requestCode == 1)
-        {
-            if(data != null)
-            {
-                Bundle bundle = data.getExtras();
-                THEbitmap = bundle.getParcelable("data");
-                imageView.setImageBitmap(THEbitmap);
-                //String[] THEarr = saveToInternalStorage(THEbitmap);
-            }
         }
     }
-    */
+    else if (requestCode == 1)
+    {
+        if(data != null)
+        {
+            Bundle bundle = data.getExtras();
+            THEbitmap = bundle.getParcelable("data");
+            imageView.setImageBitmap(THEbitmap);
+            //String[] THEarr = saveToInternalStorage(THEbitmap);
+        }
+    }
+}
+*/
     /*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -449,7 +464,6 @@ public class ChooseImage extends AppCompatActivity {
         {
             if (resultCode== RESULT_CANCELED)
             {
-
                 startActivity(new Intent(getApplicationContext(),ChooseImage.class));
                 finish();
             }
@@ -474,14 +488,12 @@ public class ChooseImage extends AppCompatActivity {
                         imageView.setImageBitmap(takenImage);
                     }
                 }
-
                 catch(Exception e)
                 {
                     e.printStackTrace();
                 }
             }
         }
-
     }*/
     public String getRealPathFromURI(Uri contentUri) {
         String res = null;

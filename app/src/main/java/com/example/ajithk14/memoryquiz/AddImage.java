@@ -95,8 +95,10 @@ public class AddImage extends AppCompatActivity {
             }
             DATABASEFINAL.faces.add(name);
             DATABASEFINAL.scores.add(0);
-            DATABASEFINAL.favoriteColor.add("");
-            DATABASEFINAL.favoriteFood.add("");
+            DATABASEFINAL.favoriteColor.add("_");
+            DATABASEFINAL.favoriteFood.add("_");
+            DATABASEFINAL.missed.add(0);
+            DATABASEFINAL.done(getApplicationContext());
             Log.d("Fav Color", DATABASEFINAL.favoriteColor.toString());
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                     AddImage.this);

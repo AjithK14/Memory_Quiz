@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,17 +25,19 @@ public class RenameDelete extends AppCompatActivity {
     Button delete;
     ImageView person;
     String filename;
+    String editing;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rename_delete);
+        DATABASEFINAL.readFromFile(getApplicationContext());
         Intent receivedIntent = getIntent();
         delete = (Button) findViewById(R.id.button10);
         myName = (EditText) findViewById(R.id.editText3);
         myFavoriteColor = (EditText) findViewById(R.id.colorField);
         myFavoriteFood = (EditText) findViewById(R.id.foodField);
-        String select = receivedIntent.getStringExtra("personName");
-        String name = receivedIntent.getStringExtra("picName");
+        String name = receivedIntent.getStringExtra("filename");
+        editing = receivedIntent.getStringExtra("editing");
         filename=name;
         person = (ImageView) findViewById(R.id.imageView5);
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
@@ -47,12 +50,15 @@ public class RenameDelete extends AppCompatActivity {
             e.printStackTrace();
         }
         person.setImageBitmap(b);
-        myName.setText(select);
-
         DATABASEFINAL.readFromFile(getApplicationContext());
-        int tempo = DATABASEFINAL.faces.indexOf(filename);
-        myFavoriteColor.setText(DATABASEFINAL.favoriteColor.get(tempo));
-        myFavoriteFood.setText(DATABASEFINAL.favoriteFood.get(tempo));
+        if (editing.equals("EDIT"))
+        {
+            int tempo = DATABASEFINAL.faces.indexOf(name);
+            myName.setText(DATABASEFINAL.answers.get(tempo));
+            myFavoriteColor.setText(DATABASEFINAL.favoriteColor.get(tempo));
+            myFavoriteFood.setText(DATABASEFINAL.favoriteFood.get(tempo));
+        }
+
     }
     public void delete(View v)
     {
@@ -92,13 +98,34 @@ public class RenameDelete extends AppCompatActivity {
     }
     public void onDone(View view)
     {
+        String  str=myName.getText().toString();
+
+        if(str.equalsIgnoreCase(""))
+        {
+            myName.setHint("please enter name");//it gives user to hint
+            myName.setError("please enter name");//it gives user to info message //use any one //
+            Toast.makeText(RenameDelete.this,"Name required!", Toast.LENGTH_SHORT).show();
+        }
+        else if (editing.equals("EDIT"))
+        {
+            DATABASEFINAL.readFromFile(getApplicationContext());
+            int tempo = DATABASEFINAL.faces.indexOf(filename);
+            DATABASEFINAL.answers.set(tempo,myName.getText().toString());
+            DATABASEFINAL.favoriteColor.set(tempo,myFavoriteColor.getText().toString());
+            DATABASEFINAL.favoriteFood.set(tempo,myFavoriteFood.getText().toString());
+            DATABASEFINAL.done(getApplicationContext());
+            startActivity(new Intent(getApplicationContext(),StartScreen.class));
+        }
+        else{
         DATABASEFINAL.readFromFile(getApplicationContext());
-        int tempo = DATABASEFINAL.faces.indexOf(filename);
-        DATABASEFINAL.answers.set(tempo,myName.getText().toString());
-        DATABASEFINAL.favoriteColor.set(tempo,myFavoriteColor.getText().toString());
-        DATABASEFINAL.favoriteFood.set(tempo,myFavoriteFood.getText().toString());
+        DATABASEFINAL.faces.add(filename);
+        DATABASEFINAL.answers.add(myName.getText().toString().equals("") ? "_" : myName.getText().toString());
+        DATABASEFINAL.favoriteColor.add(myFavoriteColor.getText().toString().equals("") ? "_" : myFavoriteColor.getText().toString());
+        DATABASEFINAL.missed.add(0);
+        DATABASEFINAL.scores.add(0);
+        DATABASEFINAL.favoriteFood.add(myFavoriteFood.getText().toString().equals("") ? "_" : myFavoriteFood.getText().toString());
         DATABASEFINAL.done(getApplicationContext());
-        startActivity(new Intent(getApplicationContext(),StartScreen.class));
+        startActivity(new Intent(getApplicationContext(),StartScreen.class));}
     }
     public void onDelete(View view)
     {
@@ -115,6 +142,7 @@ public class RenameDelete extends AppCompatActivity {
                         DATABASEFINAL.answers.remove(tempo);
                         DATABASEFINAL.scores.remove(tempo);
                         DATABASEFINAL.faces.remove(tempo);
+                        DATABASEFINAL.missed.remove(tempo);
                         DATABASEFINAL.favoriteColor.remove(tempo);
                         DATABASEFINAL.favoriteFood.remove(tempo);
                         DATABASEFINAL.done(getApplicationContext());

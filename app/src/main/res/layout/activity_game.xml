@@ -21,6 +21,7 @@
         android:id="@+id/questionField"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:autoSizeTextType="uniform"
         android:layout_weight="0.95"
         android:gravity="center"
         android:text="TextView"

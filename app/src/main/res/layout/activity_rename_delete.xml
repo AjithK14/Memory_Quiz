@@ -51,6 +51,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_weight="1"
                 android:ems="10"
+                android:hint="Name"
                 android:inputType="textPersonName"
                 android:textAlignment="center"
                 android:textSize="36sp"

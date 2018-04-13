@@ -37,6 +37,7 @@ tools:context="com.example.ajithk14.memoryquiz.AddImage">
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:ems="10"
+            android:hint="Name"
             android:inputType="textPersonName"
             android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"

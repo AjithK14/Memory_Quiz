@@ -30,22 +30,16 @@ import java.util.Collections;
 
 /*
 most missed
-
 Least missed
-
 Log of all actions??
-
 Table with each person and the percentage
 their percentage
-
 //Graph of performance
 with percentages corre'
 ct overall for each quiz
 --only display graph if you have at least 2 quizzes
-
 Text that says to view scores of specific pics
 go to edit page
-
  */
 public class StatsActivity extends AppCompatActivity {
 
@@ -161,7 +155,8 @@ public class StatsActivity extends AppCompatActivity {
             //imw.setImageBitmap(b);
 
 
-
+            TextView tv3 = view.findViewById(R.id.textView3);
+            tv3.setVisibility(View.GONE);
             final String first = ranks.get(i).name;
             String next = "Missed: " + Integer.toString(ranks.get(i).score) + " times";
             tvw2.setTextColor(Color.RED);

@@ -139,6 +139,8 @@ public class EditActivity extends AppCompatActivity {
             final String first = names[i];
             String next = "Score: " + Integer.toString(scores.get(i));
             tvw1.setText(first);
+            TextView tv3 = view.findViewById(R.id.textView3);
+            tv3.setVisibility(View.GONE);
             tvw2.setText(next);
             //final String tv = (String) tvw1.getText();
             Button bt9 = (Button)view.findViewById(R.id.button9);
@@ -146,8 +148,8 @@ public class EditActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent i = new Intent(EditActivity.this, RenameDelete.class);
-                    i.putExtra("personName",first.replace("\n",""));
-                    i.putExtra("picName", pickName);
+                    i.putExtra("editing","EDIT");
+                    i.putExtra("filename", pickName);
                     startActivity(i);
                 }
             });

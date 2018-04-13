@@ -29,6 +29,7 @@ public class GameComplete extends AppCompatActivity {
         wrongans = (TextView)findViewById(R.id.textView9);
         rightans.setText("Right: "+right);
         wrongans.setText("Wrong: "+wrong);
+        DATABASEFINAL.done(getApplicationContext());
     }
     public void Done(View v)
     {
