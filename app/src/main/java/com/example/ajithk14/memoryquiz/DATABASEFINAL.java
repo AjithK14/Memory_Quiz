@@ -203,7 +203,7 @@ public class DATABASEFINAL {
         scores = new ArrayList<>();
         favoriteColor = new ArrayList<>();
         favoriteFood = new ArrayList<>();
-        missed = new ArrayList<>();
+        //missed = new ArrayList<>();
         try {
             File direct = new File(Environment.getExternalStorageDirectory()+File.separator+"MemoryQuizInfo");
             if (!direct.exists())
