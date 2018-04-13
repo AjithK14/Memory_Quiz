@@ -32,7 +32,8 @@ public class RenameDelete extends AppCompatActivity {
         setContentView(R.layout.activity_rename_delete);
         DATABASEFINAL.readFromFile(getApplicationContext());
         Intent receivedIntent = getIntent();
-        delete = (Button) findViewById(R.id.button10);
+        delete = (Button) findViewById(R.id.button4);
+
         myName = (EditText) findViewById(R.id.editText3);
         myFavoriteColor = (EditText) findViewById(R.id.colorField);
         myFavoriteFood = (EditText) findViewById(R.id.foodField);
@@ -53,10 +54,16 @@ public class RenameDelete extends AppCompatActivity {
         DATABASEFINAL.readFromFile(getApplicationContext());
         if (editing.equals("EDIT"))
         {
+            delete.setVisibility(View.VISIBLE);
             int tempo = DATABASEFINAL.faces.indexOf(name);
             myName.setText(DATABASEFINAL.answers.get(tempo));
             myFavoriteColor.setText(DATABASEFINAL.favoriteColor.get(tempo));
             myFavoriteFood.setText(DATABASEFINAL.favoriteFood.get(tempo));
+        }
+        else
+        {
+            delete.setVisibility(View.GONE);
+
         }
 
     }
