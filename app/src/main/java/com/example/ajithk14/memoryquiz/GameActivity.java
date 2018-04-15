@@ -350,6 +350,9 @@ public class GameActivity extends AppCompatActivity {
         FIND THE IMAGE IN THE DATABASE ARRAY  AND
          */
         if (!list.get(num).answer.equals("_")) {
+
+            ArrayList<String> usedAnswers = new ArrayList<>(4);
+
             int[] colors = {Color.parseColor("#e03c57"),Color.parseColor("#543fdb"),Color.parseColor("#ef2dec"),Color.parseColor("#e57322")};
             shuffleArray(colors);
             A.setBackgroundColor(colors[0]);
@@ -373,13 +376,25 @@ public class GameActivity extends AppCompatActivity {
             quesField.setText(list.get(num).questionText);
             correct_answer = r.nextInt(4);
             arr[correct_answer].setText(list.get(num).answer);
+            usedAnswers.add(list.get(num).answer);
             Log.d("whereweat", "2" + turn);
             for (int i = 1; i < 4; i++) {
+                int tried=0;
                 int pos = (int) ((double) (Math.random() * list.size()));
+                while(!list.get(pos).questionText.equals(list.get(num).questionText) || (tried<list.size() && usedAnswers.contains(list.get(pos).answer))) {
+                    pos++;
+                    tried++;
+                    pos = pos%list.size();
+                }
 
 
                 /* NOTE: change list.size()/x so that x = the number of answer options (name, fav color, etc.....) */
-                arr[(correct_answer + i) % 4].setText(list.get(pos).answer);
+                if(usedAnswers.contains(list.get(pos).answer))
+                    arr[(correct_answer + i) % 4].setText("");
+                else {
+                    arr[(correct_answer + i) % 4].setText(list.get(pos).answer);
+                    usedAnswers.add(list.get(pos).answer);
+                }
             }
             Log.d("right answer", list.get(num).answer);
             THERIGHTANSWER = list.get(num).answer;
